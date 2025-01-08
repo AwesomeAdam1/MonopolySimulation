@@ -21,4 +21,10 @@ public class Property extends Space {
     public void doAction(Player player) {
 
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+    
 }

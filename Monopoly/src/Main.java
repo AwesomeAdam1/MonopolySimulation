@@ -45,7 +45,7 @@ public class Main {
     };
 
     public static void main(String[] args) {
-        int maxIterations = 1000;
+        int maxIterations = 10;
         int playerIndex = 0;
         int iterations = 0;
         ArrayList<Player> players = new ArrayList<>();
@@ -57,7 +57,8 @@ public class Main {
         while (iterations <= maxIterations && players.size() >= 2) {
             Player currentPlayer = players.get(playerIndex);
             System.out.printf("========== Iteration %d - %s =========\n", iterations, currentPlayer.name);
-
+            System.out.println("Player is on: " + (board[currentPlayer.getPositionIndex()].toString()));   
+            
             int doublesCount = 0;
             int roll1;
             int roll2;
