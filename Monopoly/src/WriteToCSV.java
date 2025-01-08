@@ -2,7 +2,7 @@ import com.opencsv.CSVWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class CSVUtility {
+public class WriteToCSV {
     /**
      * Writes data to a CSV file.
      * filePath -  The path of the CSV file to write to.
