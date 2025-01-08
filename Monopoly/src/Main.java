@@ -63,6 +63,7 @@ public class Main {
             int roll2;
 
             if (currentPlayer.inJail) {
+                Jail jail = null;
                 System.out.printf("In Jail. %d turns left\n", --currentPlayer.jailTimeLeft);
                 roll1 = Dice.roll();
                 roll2 = Dice.roll();
@@ -76,7 +77,11 @@ public class Main {
                     //Do action on space
                     board[currentPlayer.positionIndex].doAction(currentPlayer);
                 }
-            } else {
+                //player attempts to pay bail based on risk appetite
+                jail.payBail(currentPlayer);
+
+            } 
+                else {
                 do {
                     roll1 = Dice.roll();
                     roll2 = Dice.roll();
@@ -107,6 +112,8 @@ public class Main {
                     currentPlayer.jailTimeLeft = 3;
                     currentPlayer.positionIndex = 10;
                 }
+
+
             }
 
             //Checks bankruptcy <SIMPLE>
