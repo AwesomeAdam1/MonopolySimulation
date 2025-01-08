@@ -25,6 +25,9 @@ public class Player {
     public boolean offerToBuyProperty(Space property) {
         return false;
     }
+    
+
+
 
     public void buildHouses() {
 
@@ -32,6 +35,78 @@ public class Player {
 
     public boolean bid() {
         return false;
+    }
+
+    public ArrayList<Property> getProperties() {
+        return properties;
+    }
+
+    public void setProperties(ArrayList<Property> properties) {
+        this.properties = properties;
+    }
+
+    public int getPositionIndex() {
+        return positionIndex;
+    }
+
+    public void setPositionIndex(int positionIndex) {
+        this.positionIndex = positionIndex;
+    }
+
+    public int getMoney() {
+        return money;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean isInJail() {
+        return inJail;
+    }
+
+    public void setInJail(boolean inJail) {
+        this.inJail = inJail;
+    }
+
+    public int getJailTimeLeft() {
+        return jailTimeLeft;
+    }
+
+    public void setJailTimeLeft(int jailTimeLeft) {
+        this.jailTimeLeft = jailTimeLeft;
+    }
+
+    public double getHouseManagement() {
+        return houseManagement;
+    }
+
+    public void setHouseManagement(double houseManagement) {
+        this.houseManagement = houseManagement;
+    }
+
+    public double getPropertyManagement() {
+        return propertyManagement;
+    }
+
+    public void setPropertyManagement(double propertyManagement) {
+        this.propertyManagement = propertyManagement;
+    }
+
+    public double getRiskAppetite() {
+        return riskAppetite;
+    }
+
+    public void setRiskAppetite(double riskAppetite) {
+        this.riskAppetite = riskAppetite;
     }
 
     public
