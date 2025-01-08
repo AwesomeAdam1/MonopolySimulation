@@ -1,15 +1,16 @@
 import java.util.Random;
 
-public class Jail extends Space {
+public class Jail extends Space{
 
     private int bailCost;
     private Random random;
 
-    public Jail(Player currentPlayer) {
-
+    public Jail() {
         this.bailCost = 50;
         this.random = new Random(); // initialize random number generator.
     }
+
+
 
     public int getBailCost() {
         return bailCost;
@@ -19,27 +20,31 @@ public class Jail extends Space {
         this.bailCost = bailCost;
     }
 
-    // Method to handle a player landing on Jail
-    public void landOn(Player player) {
-        System.out.println(player.getName() + " has landed on Jail!");
+    // // Method to handle a player landing on Jail
+    // public void landOn(Player player) {
+    //     System.out.println(player.getName() + " has landed on Jail!");
 
-        // Check if player is going to jail or just visiting
-        if (!player.isInJail()) {
-            // player has actually landed on jail, so set the player to go to jail
-            player.setInJail(true);
-            System.out.println(player.getName() + " is now in Jail!");
+    //     // Check if player is going to jail or just visiting
+    //     if (!player.isInJail()) {
+    //         // player has actually landed on jail, so set the player to go to jail
+    //         player.setInJail(true);
+    //         System.out.println(player.getName() + " is now in Jail!");
 
-            player.setPositionIndex(10); // Set player location to Jail space, using hardcoded value
-        }
-        else{
-           // player was just visiting, so we will allow visiting the jail
-            // we do not need to tell player that they are visiting the jail
-            System.out.println(player.getName() + "is visiting jail!");
-        }
+    //         player.setPositionIndex(10); // Set player location to Jail space, using hardcoded value
+    //     }
+    //     else{
+    //        // player was just visiting, so we will allow visiting the jail
+    //         // we do not need to tell player that they are visiting the jail
+    //         System.out.println(player.getName() + "is visiting jail!");
+    //     }
 
-    }
+    // }
 
     // Method to allow a player to attempt to pay bail and leave jail, based on risk appetite
+    public void doAction(Player player)
+    {
+        
+    }
     public void payBail(Player player) {
         if (player.isInJail()) {
             double riskAppetite = player.getRiskAppetite();

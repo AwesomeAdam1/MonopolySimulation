@@ -109,5 +109,5 @@ public class Player {
         this.riskAppetite = riskAppetite;
     }
 
-    public
+    //public
 }

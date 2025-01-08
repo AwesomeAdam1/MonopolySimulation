@@ -85,7 +85,7 @@ public class Main {
                 do {
                     roll1 = Dice.roll();
                     roll2 = Dice.roll();
-                    currentPlayer.positionIndex = (currentPlayer.positionIndex + roll1 + roll2 % 40);
+                    currentPlayer.positionIndex = ((currentPlayer.positionIndex + roll1 + roll2) % 40);
                     System.out.printf("Rolled a %d and a %d\n", roll1, roll2);
 
                     //Passed Go
@@ -101,7 +101,7 @@ public class Main {
 
                     //Do action on space and make sure that last roll was not 3 doubles in a row
                     if (doublesCount < 3) {
-                        board[currentPlayer.positionIndex].doAction(currentPlayer);
+                            board[currentPlayer.positionIndex].doAction(currentPlayer);
                     }
                 } while (roll1 != roll2 && doublesCount < 3);
 
