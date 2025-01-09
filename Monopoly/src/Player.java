@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class Player {
-    public ArrayList<Property> properties = new ArrayList<>();
+    public ArrayList<Space> spaces = new ArrayList<>();
     public int positionIndex = 0;
     public int money = 1500;
     public String name;
@@ -18,96 +18,57 @@ public class Player {
         this.riskAppetite = riskAppetite;
     }
 
-    public int payRent() {
-        return 0;
+    public void addSpace(Space space){
+        spaces.add(space);
     }
 
-    public boolean offerToBuyProperty(Space property) {
+    public int payAmount(int amount) {
+        //===== Handle Getting More Money Action Later =====/
+
+
+        if (amount > money) {
+            money -= amount;
+            return money;
+        } else {
+            money -= amount;
+            return amount;
+        }
+    }
+
+    public boolean offerToBuySpace(Space space) {
+        if (space instanceof Property) {
+            Property property = (Property) space;
+        }
+        if (space instanceof Railroad) {
+            Railroad railroad = (Railroad) space;
+        }
+        if (space instanceof Utility) {
+            Utility utility = (Utility) space;
+        }
         return false;
     }
-    
-
-//test 1
 
     public void buildHouses() {
 
     }
 
-    public boolean bid() {
+    public int bid(int currentBid, Space space) {
+        return 0;
+    }
+
+    public boolean payBail() {
+        // If the random value is less than the risk appetite, pay the bail.
+        if (Math.random() < riskAppetite) {
+            if (money >= 50) {
+                money -= 50;
+                inJail = false;
+                return true;
+            }
+        }
         return false;
     }
 
-    public ArrayList<Property> getProperties() {
-        return properties;
+    public boolean equals(Player player) {
+        return player.name.equals(name);
     }
-
-    public void setProperties(ArrayList<Property> properties) {
-        this.properties = properties;
-    }
-
-    public int getPositionIndex() {
-        return positionIndex;
-    }
-
-    public void setPositionIndex(int positionIndex) {
-        this.positionIndex = positionIndex;
-    }
-
-    public int getMoney() {
-        return money;
-    }
-
-    public void setMoney(int money) {
-        this.money = money;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public boolean isInJail() {
-        return inJail;
-    }
-
-    public void setInJail(boolean inJail) {
-        this.inJail = inJail;
-    }
-
-    public int getJailTimeLeft() {
-        return jailTimeLeft;
-    }
-
-    public void setJailTimeLeft(int jailTimeLeft) {
-        this.jailTimeLeft = jailTimeLeft;
-    }
-
-    public double getHouseManagement() {
-        return houseManagement;
-    }
-
-    public void setHouseManagement(double houseManagement) {
-        this.houseManagement = houseManagement;
-    }
-
-    public double getPropertyManagement() {
-        return propertyManagement;
-    }
-
-    public void setPropertyManagement(double propertyManagement) {
-        this.propertyManagement = propertyManagement;
-    }
-
-    public double getRiskAppetite() {
-        return riskAppetite;
-    }
-
-    public void setRiskAppetite(double riskAppetite) {
-        this.riskAppetite = riskAppetite;
-    }
-
-    //public
 }
