@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 
 public class Player {
     public ArrayList<Space> spaces = new ArrayList<>();
@@ -71,4 +72,53 @@ public class Player {
     public boolean equals(Player player) {
         return player.name.equals(name);
     }
+
+
+
+    //Trading logic and code begins here. Idk what im doing tbh adam pls revise later
+
+    //Use this class to check for trade success. (@AwesomeAdam1 do you want to assume that if the 
+    // initate trade player passes the check the trade will always succeed? Or do both players,
+    // on both ends of the trade, both have to pask the riskCheck?)
+    private boolean tradeRiskCheck(double riskAppetite){
+        //(0.5 + (this.riskAppetite/2))) accounts for probability of success
+        return (Math.random() <=  (0.5 + (this.riskAppetite/2)));
+    }
+
+
+
+
+    //Checks if player owns specificed color group for house building
+    public boolean ownsColorGroup(String colorGroup) {
+        int totalRequired;
+        int hasColor = 0;
+        if(colorGroup.equals("Purple") || colorGroup.equals("Blue"))
+            totalRequired = 2;
+        else
+            totalRequired = 3;
+            
+        System.out.println("Debug totalReq: " + totalRequired);    
+        for (int i = 0; i < spaces.size(); i++) {
+            if(spaces.get(i) instanceof Property)
+            {
+                Property property = (Property) spaces.get(i);
+                System.out.println("Debug color" + property.color);
+                if(property.color.equals(colorGroup))
+                {
+                    hasColor++;    
+                    System.out.println("Debug equals " + property.color + colorGroup);
+                    System.out.println("HasColor " + hasColor);
+
+                }    
+            }        
+        }
+        if((colorGroup.equals("Purple") || colorGroup.equals("Blue")) && hasColor == 2)
+            return true;
+        else if(hasColor == 3)
+            return true;
+        else
+            return false;        
+    }
 }
+
+

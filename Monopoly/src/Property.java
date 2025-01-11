@@ -22,9 +22,22 @@ public class Property extends Space {
     }
 
     public void doAction(Player player) {
-        //Owns property -> do nothing
+         //Checks if property is owned and if it is, buys house.
+
         if (owner != null && owner.equals(player)) {
-            return;
+            //return;
+
+            System.out.println(color);
+            System.out.println(player.ownsColorGroup(color));
+            player.spaces.forEach(System.out::println);
+            if(houses < 4 && player.money > houseCost && Math.random() <=  (0.5 + (player.houseManagement/2)) && player.ownsColorGroup(color))
+            {
+                houses++;
+                player.money -= houseCost;
+                System.out.println("Player bought a house on " + name + " for $" + houseCost + "!");
+            }    
+            else
+                return;
         }
 
         if (owned) {
