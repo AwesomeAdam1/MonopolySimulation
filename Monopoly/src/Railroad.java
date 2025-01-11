@@ -4,7 +4,7 @@ public class Railroad extends Space {
     public Player owner;
     public String name;
     public boolean isMortgaged = false;
-    public int cost = 200;
+    public int price = 200;
     public int mortgageValue = 100;
     public boolean owned = false;
 
@@ -43,7 +43,7 @@ public class Railroad extends Space {
                 ArrayList<Player> playersInAuction = (ArrayList<Player>) Main.players.clone();
                 playersInAuction.remove(player);
 
-                int biddingPrice = 200;
+                int biddingPrice = price;
                 int index = 0;
                 while (playersInAuction.size() >= 2) {
                     int bid = playersInAuction.get(index).bid(biddingPrice, this);
@@ -60,12 +60,30 @@ public class Railroad extends Space {
                     index = (index + 1) % playersInAuction.size();
                 }
 
-                System.out.printf("%s won %s for %d\n", playersInAuction.get(index).name, name, biddingPrice);
-                Player winner = playersInAuction.get(0);
-                winner.money -= biddingPrice;
-                owner = winner;
-                owned = true;
-                winner.addSpace(this);
+                //Handle where no one bids
+                if (biddingPrice == price) {
+                    //No willing bid occurs
+                    int bid = playersInAuction.get(0).bid(biddingPrice, this);
+                    if (bid == 0) {
+                        //No one bids
+                        System.out.printf("No one bid on %s", name);
+                    } else {
+                        System.out.printf("%s won %s for %d\n", playersInAuction.get(0).name, name, biddingPrice);
+                        Player winner = playersInAuction.get(0);
+                        winner.money -= biddingPrice;
+                        owner = winner;
+                        owned = true;
+                        winner.addSpace(this);
+                    }
+                } else {
+                    //Has a winner where someone willingly bids
+                    System.out.printf("%s won %s for %d\n", playersInAuction.get(0).name, name, biddingPrice);
+                    Player winner = playersInAuction.get(0);
+                    winner.money -= biddingPrice;
+                    owner = winner;
+                    owned = true;
+                    winner.addSpace(this);
+                }
             }
         }
     }

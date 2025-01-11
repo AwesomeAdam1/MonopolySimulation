@@ -5,7 +5,7 @@ public class Main {
         new Go(),
         new Property("Mediterranean Avenue", "Purple", 60, 50, new int[]{2, 10, 30, 90, 160, 250}, 30),
         new CommunityChest(),
-        new Property("Baltic Avenue", "Purple", 60, 50, new int[]{4, 20, 60, 180, 320, 450}, 30),
+            new Property("Baltic Avenue", "Purple", 60, 50, new int[]{4, 20, 60, 180, 320, 450}, 30),
         new Tax("Income Tax", true),
         new Railroad("Reading Railroad"),
         new Property("Oriental Avenue", "LightBlue", 100, 50, new int[]{6, 30, 90, 270, 400, 550}, 50),
@@ -46,13 +46,13 @@ public class Main {
     public static ArrayList<Player> players = new ArrayList<>();
 
     public static void main(String[] args) {
-        int maxIterations = 10;
+        int maxIterations = 1000;
         int playerIndex = 0;
         int iterations = 1;
-        players.add(new Player("Player1", 0.5, 0.5, 0.5));
-        players.add(new Player("Player2", 0.5, 0.5, 0.5));
-        players.add(new Player("Player3", 0.5, 0.5, 0.5));
-        players.add(new Player("Player4", 0.5, 0.5, 0.5));
+        players.add(new Player("Player1", 0.5, 0.5, 0.5, 0.5, 0.5));
+        players.add(new Player("Player2", 0.5, 0.5, 0.5,0.5,0.5));
+        players.add(new Player("Player3", 0.5, 0.5, 0.5,0.5,0.5));
+        players.add(new Player("Player4", 0.5, 0.5, 0.5,0.5,0.5));
 
         while (iterations <= maxIterations && players.size() >= 2) {
             Player currentPlayer = players.get(playerIndex);
@@ -83,6 +83,7 @@ public class Main {
                     } else {
                         board[currentPlayer.positionIndex].doAction(currentPlayer);
                     }
+                    currentPlayer.analysis();
                 }
 
                 //Check if 3 turns have past, if so bail is forced
@@ -101,6 +102,7 @@ public class Main {
                         } else {
                             board[currentPlayer.positionIndex].doAction(currentPlayer);
                         }
+                        currentPlayer.analysis();
                     }
                 }
 
@@ -143,6 +145,7 @@ public class Main {
                         } else {
                             board[currentPlayer.positionIndex].doAction(currentPlayer);
                         }
+                        currentPlayer.analysis();
                     }
                 } while (roll1 == roll2 && doublesCount < 3);
 
@@ -167,5 +170,6 @@ public class Main {
             playerIndex = (playerIndex + 1) % players.size();
         }
 
+        System.out.println("========== GAME END =========");
     }
 }
