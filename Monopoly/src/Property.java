@@ -54,6 +54,7 @@ public class Property extends Space {
                 owned = true;
                 player.addSpace(this);
                 System.out.printf("%s bought %s\n", player.name, name);
+                System.out.println("Property purchased");
             } else {
                 //Rejects property -> put for auction
                 ArrayList<Player> playersInAuction = (ArrayList<Player>) Main.players.clone();

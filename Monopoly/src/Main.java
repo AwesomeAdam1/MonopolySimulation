@@ -46,7 +46,7 @@ public class Main {
     public static ArrayList<Player> players = new ArrayList<>();
 
     public static void main(String[] args) {
-        int maxIterations = 2000;
+        int maxIterations = 10000;
         int playerIndex = 0;
         int iterations = 1;
         players.add(new Player("Player1", 0.5, 0.5, 0.5));

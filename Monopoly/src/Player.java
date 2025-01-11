@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.List;
 
 public class Player {
     public ArrayList<Space> spaces = new ArrayList<>();
@@ -97,17 +96,17 @@ public class Player {
         else
             totalRequired = 3;
             
-        System.out.println("Debug totalReq: " + totalRequired);    
+        System.out.println("Debug totalRequired for Colorgroup: " + totalRequired);    
         for (int i = 0; i < spaces.size(); i++) {
             if(spaces.get(i) instanceof Property)
             {
                 Property property = (Property) spaces.get(i);
-                System.out.println("Debug color" + property.color);
+                System.out.println("Debug color current property " + property.color);
                 if(property.color.equals(colorGroup))
                 {
                     hasColor++;    
-                    System.out.println("Debug equals " + property.color + colorGroup);
-                    System.out.println("HasColor " + hasColor);
+                    System.out.println("Debug: property equals " + property.color + colorGroup);
+                    System.out.println("HasColor count " + hasColor);
 
                 }    
             }        
