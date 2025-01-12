@@ -132,8 +132,8 @@ public class Main {
 
                     //Check doubles
                     if (roll1 == roll2) {
-                        System.out.printf("DOUBLES! Doubles Count: %d\n", doublesCount);
                         doublesCount++;
+                        System.out.printf("DOUBLES! Doubles Count: %d\n", doublesCount);
                     }
 
 

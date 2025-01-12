@@ -43,6 +43,7 @@ public class Property extends Space {
                 System.out.println("Property purchased");
             } else {
                 //Rejects property -> put for auction
+                System.out.println("Player rejected direct purchase!");
                 ArrayList<Player> playersInAuction = (ArrayList<Player>) Main.players.clone();
                 playersInAuction.remove(player);
 

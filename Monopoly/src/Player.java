@@ -119,12 +119,12 @@ public class Player {
             if(spaces.get(i) instanceof Property)
             {
                 Property property = (Property) spaces.get(i);
-                System.out.println("Debug color current property " + property.color);
+//                System.out.println("Debug color current property " + property.color);
                 if(property.color.equals(colorGroup))
                 {
                     hasColor++;    
-                    System.out.println("Debug: property equals " + property.color + colorGroup);
-                    System.out.println("HasColor count " + hasColor);
+//                    System.out.println("Debug: property equals " + property.color + colorGroup);
+//                    System.out.println("HasColor count " + hasColor);
 
                 }    
             }        
