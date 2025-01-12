@@ -67,27 +67,21 @@ public class Player {
                 return false;
             }
             Property property = (Property) space;
-            property.owner = this;
-            property.owned = true;
-            addSpace(property);
+            return true;
         }
         if (space instanceof Railroad) {
             if (Math.random() > propertyManagement) {
                 return false;
             }
             Railroad railroad = (Railroad) space;
-            railroad.owner = this;
-            railroad.owned = true;
-            addSpace(railroad);
+            return true;
         }
         if (space instanceof Utility) {
             if (Math.random() > propertyManagement) {
                 return false;
             }
             Utility utility = (Utility) space;
-            utility.owner = this;
-            utility.owned = true;
-            addSpace(utility);
+            return true;
         }
         return false;
     }

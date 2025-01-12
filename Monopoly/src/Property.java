@@ -52,13 +52,14 @@ public class Property extends Space {
                     int bid = playersInAuction.get(index).bid(biddingPrice, this);
                     if (bid == 0) {
                         //Does not want to bid
-                        playersInAuction.remove(index);
                         System.out.printf("%s dropped out of bidding.\n", playersInAuction.get(index).name);
+                        playersInAuction.remove(index);
+                        index %= playersInAuction.size();
                         continue;
                     } else {
                         //Overbids
                         biddingPrice = bid;
-                        System.out.printf("%s bid %d\n", playersInAuction.get(index).name, biddingPrice);
+                        //System.out.printf("%s bid %d\n", playersInAuction.get(index).name, biddingPrice);
                     }
                     index = (index + 1) % playersInAuction.size();
                 }
