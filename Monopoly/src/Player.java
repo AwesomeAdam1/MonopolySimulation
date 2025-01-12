@@ -58,23 +58,55 @@ public class Player {
     }
 
     public void buildHouses() {
+        ArrayList<Property> buildableProperties = new ArrayList<>();
+
         for (int i = 0; i < spaces.size(); i++) {
             if (spaces.get(i) instanceof Property) {
                 Property property = (Property) spaces.get(i);
-                if(Math.random() < houseManagement && property.owner.name.equals(name))
+                if(property.owner.name.equals(name))
                 {
-                    if(property.houses < 4 && money > property.houseCost && ownsColorGroup(property.color))
-                    {
-                        property.houses += 1;
-                        money -= property.houseCost;
-                        System.out.println(name + " bought a house on " + property.name + " for $" + property.houseCost + "! This makes its rent now: $" + property.rent[property.houses] + 
-                        " instead of $" + property.rent[property.houses - 1]);
+                     if(property.houses < 4 && money > property.houseCost && ownsColorGroup(property.color))
+                        buildableProperties.add(property);
+                }
+            }
+         }
+
+         if(buildableProperties.size() > 0){
+            for (int i = 0; i < buildableProperties.size(); i++) {
+                System.out.println(buildableProperties.get(i));
+            }
+            //Sort properties based on house price, and houseManagement value
+            int n = buildableProperties.size();
+            for(int i=0; i < n - 1; i++){
+                int minMaxIndex = i;
+                for(int j = i + 1; j < n; j++){
+                    if(this.houseManagement < 0.5){
+                        if(buildableProperties.get(j).houseCost < buildableProperties.get(minMaxIndex).houseCost){
+                            minMaxIndex = j;}
+                    }
+                    else {
+                        if(buildableProperties.get(j).houseCost > buildableProperties.get(minMaxIndex).houseCost){
+                        minMaxIndex = j;}
                     }
                 }
-            }  
-            else
-                return;
+                Property temp = buildableProperties.get(minMaxIndex);
+                buildableProperties.set(minMaxIndex, buildableProperties.get(i));
+                buildableProperties.set(i,temp);
+           }
+
+            for (Property property : buildableProperties) {
+                if(Math.random() < houseManagement && property.houses < 4 && money > property.houseCost)
+                {
+                    property.houses += 1;
+                    money -= property.houseCost;
+                    System.out.println(name + " bought a house on " + property.name + " for $" + property.houseCost + "! This makes its rent now: $" + property.rent[property.houses] +
+                    " instead of $" + property.rent[property.houses - 1]);
+                    return;
+                }
+                else
+                    return;
             }
+        }
     }
 
     public int bid(int currentBid, Space space) {
