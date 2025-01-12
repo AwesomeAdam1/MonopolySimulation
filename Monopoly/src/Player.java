@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Player {
     public ArrayList<Space> spaces = new ArrayList<>();
@@ -57,57 +58,78 @@ public class Player {
         return false;
     }
 
-    public void buildHouses() {
-        ArrayList<Property> buildableProperties = new ArrayList<>();
 
+    private ArrayList<Property> getBuildableProperties(ArrayList<Space> spaces) {
+        ArrayList<Property> buildableProperties = new ArrayList<>();
         for (int i = 0; i < spaces.size(); i++) {
             if (spaces.get(i) instanceof Property) {
                 Property property = (Property) spaces.get(i);
-                if(property.owner.name.equals(name))
+                if(property.owner.name.equals(name) && ownsColorGroup(property.color) && property.houses < 4 && money > property.houseCost)
+                    buildableProperties.add(property);
+             }
+        }
+        return buildableProperties;
+    }
+
+    private void sortPropertiesByHouseCost(ArrayList<Property> properties) {
+        int n = properties.size();
+        for (int i = 0; i < n - 1; i++) {
+            int minMaxIndex = i;
+            for (int j = i + 1; j < n; j++) {
+                if (this.houseManagement < 0.5)
+                    if (properties.get(j).houseCost < properties.get(minMaxIndex).houseCost)
+                        minMaxIndex = j;
+                else 
+                    if (properties.get(j).houseCost > properties.get(minMaxIndex).houseCost)
+                        minMaxIndex = j;
+            }
+            Property temp = properties.get(minMaxIndex);
+            properties.set(minMaxIndex, properties.get(i));
+            properties.set(i, temp);
+        }
+    }    
+
+    public void buildHouses() {
+    if(Math.random() < houseManagement){
+        ArrayList<Space> spaces = this.spaces;
+        ArrayList<Property> buildableProperties = getBuildableProperties(spaces);
+        ArrayList<ArrayList<Property>> propertiesByColor = new ArrayList<>();
+
+        for (Property property : buildableProperties) {
+            boolean hasGroup = false;
+            for(ArrayList<Property> group : propertiesByColor)
+            {
+                if(group.get(0).color.equals(property.color))
                 {
-                     if(property.houses < 4 && money > property.houseCost && ownsColorGroup(property.color))
-                        buildableProperties.add(property);
+                    group.add(property);
+                    hasGroup = true;
+                    break;
                 }
             }
-         }
-
-         if(buildableProperties.size() > 0){
-            for (int i = 0; i < buildableProperties.size(); i++) {
-                System.out.println(buildableProperties.get(i));
-            }
-            //Sort properties based on house price, and houseManagement value
-            int n = buildableProperties.size();
-            for(int i=0; i < n - 1; i++){
-                int minMaxIndex = i;
-                for(int j = i + 1; j < n; j++){
-                    if(this.houseManagement < 0.5){
-                        if(buildableProperties.get(j).houseCost < buildableProperties.get(minMaxIndex).houseCost){
-                            minMaxIndex = j;}
-                    }
-                    else {
-                        if(buildableProperties.get(j).houseCost > buildableProperties.get(minMaxIndex).houseCost){
-                        minMaxIndex = j;}
-                    }
-                }
-                Property temp = buildableProperties.get(minMaxIndex);
-                buildableProperties.set(minMaxIndex, buildableProperties.get(i));
-                buildableProperties.set(i,temp);
-           }
-
-            for (Property property : buildableProperties) {
-                if(Math.random() < houseManagement && property.houses < 4 && money > property.houseCost)
-                {
-                    property.houses += 1;
-                    money -= property.houseCost;
-                    System.out.println(name + " bought a house on " + property.name + " for $" + property.houseCost + "! This makes its rent now: $" + property.rent[property.houses] +
-                    " instead of $" + property.rent[property.houses - 1]);
-                    return;
-                }
-                else
-                    return;
+            if(!hasGroup){
+                propertiesByColor.add(new ArrayList<>(Arrays.asList(property)));
             }
         }
-    }
+
+       if (buildableProperties.size() > 0) {
+            for (int houseLevel = 1; houseLevel <= 4; houseLevel++) { // Check for every house level.
+                 for(ArrayList<Property> group : propertiesByColor){ //Iterate through every group.
+                    sortPropertiesByHouseCost(group);
+                   for(Property property : group){ //Try to build on every property
+                        if(property.houses == houseLevel -1 &&  money > property.houseCost)
+                       {
+                           property.houses += 1;
+                            money -= property.houseCost;
+                           System.out.println(name + " bought a house on " + property.name + " for $" + property.houseCost + "! This makes its rent now: $" + property.rent[property.houses] +
+                               " instead of $" + property.rent[property.houses - 1]);
+                           return;
+                        }
+                   }
+               }
+           }
+        }
+       }
+   }
 
     public int bid(int currentBid, Space space) {
         return 0;
