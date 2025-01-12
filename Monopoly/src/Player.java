@@ -37,13 +37,28 @@ public class Player {
 
     public boolean offerToBuySpace(Space space) {
         if (space instanceof Property) {
+            if(Math.random() > propertyManagement)
+                return false;
             Property property = (Property) space;
+            System.out.println("True evaluation");
+
+            return true;
         }
         if (space instanceof Railroad) {
+            if(Math.random() > propertyManagement)
+                return false;
             Railroad railroad = (Railroad) space;
+            System.out.println("True evaluation");
+
+            return true;
         }
         if (space instanceof Utility) {
+            if(Math.random() > propertyManagement)
+            return false;
             Utility utility = (Utility) space;
+            System.out.println("True evaluation");
+
+            return true;
         }
         return false;
     }
