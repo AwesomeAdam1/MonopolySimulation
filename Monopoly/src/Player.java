@@ -40,31 +40,41 @@ public class Player {
             if(Math.random() > propertyManagement)
                 return false;
             Property property = (Property) space;
-            System.out.println("True evaluation");
-
             return true;
         }
         if (space instanceof Railroad) {
             if(Math.random() > propertyManagement)
                 return false;
             Railroad railroad = (Railroad) space;
-            System.out.println("True evaluation");
-
             return true;
         }
         if (space instanceof Utility) {
             if(Math.random() > propertyManagement)
-            return false;
+                return false;
             Utility utility = (Utility) space;
-            System.out.println("True evaluation");
-
             return true;
         }
         return false;
     }
 
     public void buildHouses() {
-
+        for (int i = 0; i < spaces.size(); i++) {
+            if (spaces.get(i) instanceof Property) {
+                Property property = (Property) spaces.get(i);
+                if(Math.random() < houseManagement && property.owner.name.equals(name))
+                {
+                    if(property.houses < 4 && money > property.houseCost && ownsColorGroup(property.color))
+                    {
+                        property.houses += 1;
+                        money -= property.houseCost;
+                        System.out.println(name + " bought a house on " + property.name + " for $" + property.houseCost + "! This makes its rent now: $" + property.rent[property.houses] + 
+                        " instead of $" + property.rent[property.houses - 1]);
+                    }
+                }
+            }  
+            else
+                return;
+            }
     }
 
     public int bid(int currentBid, Space space) {
@@ -104,14 +114,7 @@ public class Player {
 
     //Checks if player owns specificed color group for house building
     public boolean ownsColorGroup(String colorGroup) {
-        int totalRequired;
         int hasColor = 0;
-        if(colorGroup.equals("Purple") || colorGroup.equals("Blue"))
-            totalRequired = 2;
-        else
-            totalRequired = 3;
-            
-        System.out.println("Debug totalRequired for Colorgroup: " + totalRequired);    
         for (int i = 0; i < spaces.size(); i++) {
             if(spaces.get(i) instanceof Property)
             {

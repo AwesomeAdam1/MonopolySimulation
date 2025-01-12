@@ -46,7 +46,7 @@ public class Main {
     public static ArrayList<Player> players = new ArrayList<>();
 
     public static void main(String[] args) {
-        int maxIterations = 10000;
+        int maxIterations = 5000;
         int playerIndex = 0;
         int iterations = 1;
         players.add(new Player("Player1", 0.5, 0.5, 0.5));
@@ -155,7 +155,7 @@ public class Main {
                     currentPlayer.positionIndex = 10;
                 }
             }
-
+            currentPlayer.buildHouses();
             //Checks bankruptcy
             if (currentPlayer.money <= 0) {
                 System.out.println("BANKRUPT! Player is removed.");
