@@ -24,6 +24,7 @@ public class Property extends Space {
     public void doAction(Player player) {
         if (owner != null && owner.equals(player)) {
             System.out.println("Player owned!");
+            return;
         }
 
         if (owned) {
@@ -60,7 +61,7 @@ public class Property extends Space {
                     } else {
                         //Overbids
                         biddingPrice = bid;
-                        //System.out.printf("%s bid %d\n", playersInAuction.get(index).name, biddingPrice);
+                        System.out.printf("%s bid %d\n", playersInAuction.get(index).name, biddingPrice);
                     }
                     index = (index + 1) % playersInAuction.size();
                 }

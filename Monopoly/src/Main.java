@@ -83,7 +83,6 @@ public class Main {
                     } else {
                         board[currentPlayer.positionIndex].doAction(currentPlayer);
                     }
-                    currentPlayer.analysis();
                 }
 
                 //Check if 3 turns have past, if so bail is forced
@@ -102,7 +101,6 @@ public class Main {
                         } else {
                             board[currentPlayer.positionIndex].doAction(currentPlayer);
                         }
-                        currentPlayer.analysis();
                     }
                 }
 
@@ -146,7 +144,6 @@ public class Main {
                         } else {
                             board[currentPlayer.positionIndex].doAction(currentPlayer);
                         }
-                        currentPlayer.analysis();
                     }
                 } while (roll1 == roll2 && doublesCount < 3);
 
@@ -158,7 +155,12 @@ public class Main {
                     currentPlayer.positionIndex = 10;
                 }
             }
-            currentPlayer.buildHouses();
+
+
+            //currentPlayer.buildHouses();
+            //currentPlayer.offerTrades();
+            System.out.println("DEBUG: NEXT PLAYER");
+
             //Checks bankruptcy
             if (currentPlayer.money <= 0) {
                 System.out.println("BANKRUPT! Player is removed.");
@@ -169,13 +171,17 @@ public class Main {
             System.out.println("");
             iterations++;
             playerIndex = (playerIndex + 1) % players.size();
-            /*
-            for (int i = 0; i < 4; i++) {
-                players.get(i).spaces.forEach(System.out::println);    
-            }        
-                */
         }
 
         System.out.println("========== GAME END =========");
+        System.out.println(players.size());
+        for (int i = 0; i < players.size(); i++) {
+            Player player = players.get(i);
+            System.out.println(player.toString());
+            System.out.println(player.money);
+            for (Space s : player.spaces) {
+                System.out.println(s.toString());
+            }
+        }
     }
 }
