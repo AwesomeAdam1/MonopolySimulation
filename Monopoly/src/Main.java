@@ -46,7 +46,7 @@ public class Main {
     public static ArrayList<Player> players = new ArrayList<>();
 
     public static void main(String[] args) {
-        int maxIterations = 10;
+        int maxIterations = 5000;
         int playerIndex = 0;
         int iterations = 1;
         players.add(new Player("Player1", 0.5, 0.5, 0.5, 0.5, 0.5));
@@ -134,9 +134,10 @@ public class Main {
 
                     //Check doubles
                     if (roll1 == roll2) {
-                        System.out.printf("DOUBLES! Doubles Count: %d\n", doublesCount);
                         doublesCount++;
+                        System.out.printf("DOUBLES! Doubles Count: %d\n", doublesCount);
                     }
+
 
                     //Do action on space and make sure that last roll was not 3 doubles in a row
                     if (doublesCount < 3) {
@@ -157,7 +158,7 @@ public class Main {
                     currentPlayer.positionIndex = 10;
                 }
             }
-
+            currentPlayer.buildHouses();
             //Checks bankruptcy
             if (currentPlayer.money <= 0) {
                 System.out.println("BANKRUPT! Player is removed.");
@@ -168,6 +169,11 @@ public class Main {
             System.out.println("");
             iterations++;
             playerIndex = (playerIndex + 1) % players.size();
+            /*
+            for (int i = 0; i < 4; i++) {
+                players.get(i).spaces.forEach(System.out::println);    
+            }        
+                */
         }
 
         System.out.println("========== GAME END =========");

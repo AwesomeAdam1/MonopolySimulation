@@ -22,9 +22,8 @@ public class Property extends Space {
     }
 
     public void doAction(Player player) {
-        //Owns property -> do nothing
         if (owner != null && owner.equals(player)) {
-            return;
+            System.out.println("Player owned!");
         }
 
         if (owned) {
@@ -41,8 +40,10 @@ public class Property extends Space {
                 owned = true;
                 player.addSpace(this);
                 System.out.printf("%s bought %s\n", player.name, name);
+                System.out.println("Property purchased");
             } else {
                 //Rejects property -> put for auction
+                System.out.println("Player rejected direct purchase!");
                 ArrayList<Player> playersInAuction = (ArrayList<Player>) Main.players.clone();
                 playersInAuction.remove(player);
 
