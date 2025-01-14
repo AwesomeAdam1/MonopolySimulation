@@ -101,6 +101,8 @@ public class Main {
                         } else {
                             board[currentPlayer.positionIndex].doAction(currentPlayer);
                         }
+                    } else {
+                        currentPlayer.setOwnersOfSpaces(null);
                     }
                 }
 
@@ -159,7 +161,7 @@ public class Main {
             currentPlayer.buildHouses();
             currentPlayer.offerTrades();
             System.out.println("DEBUG: NEXT PLAYER");
-
+            System.out.println("Current player money: " + currentPlayer.money + "");
             //Checks bankruptcy
 
             if (currentPlayer.money <= 0) {

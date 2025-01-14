@@ -31,6 +31,9 @@ public class Railroad extends Space {
             System.out.printf("%s has been paid $%d by %s\n", owner.name, payAmount, player.name);
             System.out.printf("%s now has $%d\n", owner.name, owner.money);
             System.out.printf("%s now has $%d\n", player.name, player.money);
+            if (player.money < 0) {
+                player.setOwnersOfSpaces(owner);
+            }
         } else {
             if (player.offerToBuySpace(this)) {
                 //Buys property
