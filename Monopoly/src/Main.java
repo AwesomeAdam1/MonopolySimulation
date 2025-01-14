@@ -158,9 +158,24 @@ public class Main {
             currentPlayer.buildHouses();
             //Checks bankruptcy
             if (currentPlayer.money <= 0) {
-                System.out.println("BANKRUPT! Player is removed.");
-                players.remove(playerIndex);
-                playerIndex--;
+                if(currentPlayer.totalNumberOfHouses() > 0)
+                {
+                    currentPlayer.sortCheapest();
+                    while(currentPlayer.money <= 0 && currentPlayer.totalNumberOfHouses() > 0 )
+                    {
+                        currentPlayer.sellHouse();
+                    }
+                    if(currentPlayer.money > 0)
+                        break;
+                    else
+                        System.out.println(currentPlayer.name + " is still broke after selling all houses. BANKRUPT!");
+                }
+                else
+                {
+                    System.out.println("BANKRUPT! Player is removed.");
+                    players.remove(playerIndex);
+                    playerIndex--;
+                }    
             }
 
             System.out.println("");
