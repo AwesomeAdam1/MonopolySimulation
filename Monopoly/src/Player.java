@@ -31,11 +31,26 @@ public class Player {
 
 
         if (amount > money) {
-            money -= amount;
-            return money;
-        } else {
+            if(totalNumberOfHouses() > 0)
+            {
+                sortCheapest();
+                while(money <= 0 && totalNumberOfHouses() > 0 )
+                {
+                    sellHouse();
+                }
+                if(money > 0)
+                    return money;
+                else
+                    System.out.println(name + " is still broke after selling all houses. BANKRUPT!");
+            }          
+        }
+
+        if (money >= amount) {
             money -= amount;
             return amount;
+        } else {
+            money -= amount;
+            return money;
         }
     }
 
@@ -154,6 +169,72 @@ public class Player {
         return player.name.equals(name);
     }
 
+    
+    public int totalNumberOfHouses()
+    {
+        int rtn = 0;
+        for (int i = 0; i < spaces.size(); i++) 
+        {
+            if(spaces.get(i) instanceof Property)
+            {
+                Property property = (Property) spaces.get(i);
+                rtn += property.houses;
+            }
+        }
+        return rtn;
+    }
+    public ArrayList<Property> sortCheapest() // ONLY CALL AFTER CHECKING totalNumberOfHouses() FOR PLAYER > 0
+    {
+        ArrayList<Property> housedProperties = new ArrayList<>();
+        for (int i = 0; i < spaces.size(); i++) 
+        {
+            if(spaces.get(i) instanceof Property)
+            {
+                Property property = (Property) spaces.get(i);
+                if(property.houses > 0)
+                    housedProperties.add(property);
+            }
+        }
+        if(housedProperties.size() == 1)
+            return housedProperties;
+        for (int i = 0; i < housedProperties.size() - 1; i++)  //I think this was called a bubble sort idfk
+        {
+            for (int j = 0; j < housedProperties.size() - 1 - i; j++) 
+            {
+                if (housedProperties.get(j).houseCost > housedProperties.get(j + 1).houseCost) 
+                {
+                    Property temp = housedProperties.get(j);
+                    housedProperties.set(j, housedProperties.get(j + 1));
+                    housedProperties.set(j + 1, temp);
+                }
+            }
+        }
+        return housedProperties; 
+    }
+    public void sellHouse()
+    {
+        ArrayList<Property> propertiesToSell = sortCheapest();
+        Property byeBye = propertiesToSell.get(0);
+        
+        int indexOfSellHouse = 0;
+        for (int i = 0; i < spaces.size(); i++) {
+            if(spaces.get(i) instanceof Property)
+            {
+                Property property = (Property) spaces.get(i);
+                if(property.name.equals(byeBye.name))    
+                {
+                    indexOfSellHouse = i; 
+                    break;
+                }
+            }
+        }
+        Property property = (Property) spaces.get(indexOfSellHouse);
+        System.out.println("Player before house sell balance: " + money);
+        property.houses--;
+        money += property.houseCost;
+        System.out.println(name + " sold a house on " + property.name + " for " + " $" + property.houseCost);
+        System.out.println(name + "'s balance is now " + money);
+    }
     //Checks if player owns specificed color group for house building
     public boolean ownsColorGroup(String colorGroup) {
         int hasColor = 0;
