@@ -156,9 +156,8 @@ public class Main {
                 }
             }
 
-
-            //currentPlayer.buildHouses();
-            //currentPlayer.offerTrades();
+            currentPlayer.buildHouses();
+            currentPlayer.offerTrades();
             System.out.println("DEBUG: NEXT PLAYER");
 
             //Checks bankruptcy

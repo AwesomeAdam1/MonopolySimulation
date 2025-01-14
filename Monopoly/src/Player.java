@@ -33,12 +33,13 @@ public class Player {
         //===== Handle Getting More Money Action Later =====/
 
 
-        if (amount > money) {
-            money -= amount;
-            return money;
-        } else {
+
+        if (money >= amount) {
             money -= amount;
             return amount;
+        } else {
+            money -= amount;
+            return money;
         }
     }
 

@@ -19,13 +19,13 @@ public class TradeOffer {
     }
 
     public void trade() {
-        playerCash1 += playerCash2;
-        playerCash2 -= playerCash1;
-
-        player2.spaces.addAll(playerProperties1);
-        player1.spaces.removeAll(playerProperties1);
-
-        player1.spaces.addAll(playerProperties2);
-        player2.spaces.removeAll(playerProperties2);
+//        playerCash1 += playerCash2;
+//        playerCash2 -= playerCash1;
+//
+//        player2.spaces.addAll(playerProperties1);
+//        player1.spaces.removeAll(playerProperties1);
+//
+//        player1.spaces.addAll(playerProperties2);
+//        player2.spaces.removeAll(playerProperties2);
     }
 }
