@@ -40,6 +40,7 @@ public class Player {
                 while(money <= 0 && totalNumberOfHouses() > 0 )
                 {
                     sellHouse();
+                    System.out.println("ASFOHAISJFHASKJFASHBKLJAHSBFKJABSFJ I GOT CALLED");
                 }
                 if(money > 0)
                     return money;
@@ -85,10 +86,20 @@ public class Player {
         for (int i = 0; i < spaces.size(); i++) {
             if (spaces.get(i) instanceof Property) {
                 Property property = (Property) spaces.get(i);
-                if(property.owner.name.equals(name) && ownsColorGroup(property.color) && property.houses < 4 && money > property.houseCost)
+                System.out.println("Currently inspected property: " + property.name);
+
+                System.out.println("Owns color group T/F: " + ownsColorGroup(property.color));
+                System.out.println("Number of houses " + property.houses);
+                System.out.println("Affordable? " + (money > property.houseCost));
+                if(property.owner.name.toLowerCase().equals(name.toLowerCase()) && 
+                ownsColorGroup(property.color) && property.houses < 4 && money > property.houseCost)
+                {
                     buildableProperties.add(property);
+                    System.out.println("property added " + property.name);
+                }    
              }
         }
+        System.out.println("buildable properties size: " + buildableProperties.size());
         return buildableProperties;
     }
 
@@ -111,46 +122,53 @@ public class Player {
     }    
 
     public void buildHouses() {
-    if(Math.random() < houseManagement){
-        ArrayList<Space> spaces = this.spaces;
-        ArrayList<Property> buildableProperties = getBuildableProperties(spaces);
-        ArrayList<ArrayList<Property>> propertiesByColor = new ArrayList<>();
+        if(Math.random() < houseManagement){
+            ArrayList<Space> spaces = this.spaces;
+            ArrayList<Property> buildableProperties = getBuildableProperties(spaces);
+            ArrayList<ArrayList<Property>> propertiesByColor = new ArrayList<>();
+            System.out.println("Check passed sout buildable properties:");
 
-        for (Property property : buildableProperties) {
-            boolean hasGroup = false;
-            for(ArrayList<Property> group : propertiesByColor)
-            {
-                if(group.get(0).color.equals(property.color))
+            for (int i = 0; i < buildableProperties.size(); i++) {
+                System.out.println(buildableProperties.get(i));
+            }
+            for (Property property : buildableProperties) {
+                boolean hasGroup = false;
+                for(ArrayList<Property> group : propertiesByColor)
                 {
-                    group.add(property);
-                    hasGroup = true;
-                    break;
+                    if(group.get(0).color.equals(property.color))
+                    {
+                        group.add(property);
+                        hasGroup = true;
+                        break;
+                    }
+                }
+                if(!hasGroup){
+                    propertiesByColor.add(new ArrayList<>(Arrays.asList(property)));
                 }
             }
-            if(!hasGroup){
-                propertiesByColor.add(new ArrayList<>(Arrays.asList(property)));
-            }
-        }
-
-       if (buildableProperties.size() > 0) {
-            for (int houseLevel = 1; houseLevel <= 4; houseLevel++) { // Check for every house level.
-                 for(ArrayList<Property> group : propertiesByColor){ //Iterate through every group.
-                    sortPropertiesByHouseCost(group);
-                   for(Property property : group){ //Try to build on every property
-                        if(property.houses == houseLevel -1 &&  money > property.houseCost)
-                       {
-                           property.houses += 1;
-                            money -= property.houseCost;
-                           System.out.println(name + " bought a house on " + property.name + " for $" + property.houseCost + "! This makes its rent now: $" + property.rent[property.houses] +
-                               " instead of $" + property.rent[property.houses - 1]);
-                           return;
-                        }
+    
+           if (buildableProperties.size() > 0) {
+            System.out.println("Buildable properties present");
+                for (int houseLevel = 1; houseLevel <= 4; houseLevel++) { // Check for every house level.
+                     for(ArrayList<Property> group : propertiesByColor){ //Iterate through every group.
+                        sortPropertiesByHouseCost(group);
+                       for(Property property : group){ //Try to build on every property
+                        System.out.println("Attempting to build on " + property.name);
+                            if(property.houses == houseLevel -1 &&  money > property.houseCost)
+                           {
+                               property.houses += 1;
+                                money -= property.houseCost;
+                               System.out.println(name + " bought a house on " + property.name + " for $" + property.houseCost + "! This makes its rent now: $" + property.rent[property.houses] +
+                                   " instead of $" + property.rent[property.houses - 1]);
+                               return;
+                            }
+                       }
                    }
                }
+            }
            }
-        }
+           System.out.println("House buy terminated");
        }
-   }
 
     public int bid(int currentBid, Space space) {
         // auctionStrategy ∈ [0,1) : where every .1 represents max bid will be up to (price * auctionStrategy/0.1)
@@ -306,22 +324,33 @@ public class Player {
             if(spaces.get(i) instanceof Property)
             {
                 Property property = (Property) spaces.get(i);
-//                System.out.println("Debug color current property " + property.color);
-                if(property.color.equals(colorGroup))
+                System.out.println("Debug color current property " + property.color);
+                if(property.color.toLowerCase().equals(colorGroup.toLowerCase()))
                 {
                     hasColor++;    
-//                    System.out.println("Debug: property equals " + property.color + colorGroup);
-//                    System.out.println("HasColor count " + hasColor);
+                    System.out.println("Debug: property equals " + property.color + colorGroup);
+                    System.out.println("HasColor count " + hasColor);
 
                 }    
             }        
         }
+
         if((colorGroup.equals("Purple") || colorGroup.equals("Blue")) && hasColor == 2)
+        {
+            System.out.println("group owned " + colorGroup);
             return true;
+        }    
         else if(hasColor == 3)
+        {
+            System.out.println("group owned " + colorGroup);
             return true;
+        }    
         else
+        {
+            System.out.println("Group not owned " + hasColor + "<--num " + colorGroup);
+
             return false;        
+        }    
     }
 
     public void offerTrades() {
