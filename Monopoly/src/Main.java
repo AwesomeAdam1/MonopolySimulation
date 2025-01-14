@@ -157,13 +157,14 @@ public class Main {
             }
             currentPlayer.buildHouses();
             //Checks bankruptcy
+
             if (currentPlayer.money <= 0) {
 
                     System.out.println("BANKRUPT! Player is removed.");
                     players.remove(playerIndex);
                     playerIndex--;
                 }    
-            }
+            
 
             System.out.println("");
             iterations++;
@@ -176,3 +177,4 @@ public class Main {
         }
 
     }
+}        
