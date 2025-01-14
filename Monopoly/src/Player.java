@@ -72,33 +72,37 @@ public class Player {
 
     public int payAmount(int amount) {
         //===== Handle Getting More Money Action Later =====/
-
-
         if (amount > money) {
             if(totalNumberOfHouses() > 0)
             {
-                System.out.println("EEEEEEEE");
+                int preMoney = money;
+                // System.out.println("EEEEEEEE");
                 sortCheapest();
                 money -= amount;
                 while(money <= 0 && totalNumberOfHouses() > 0 )
                 {
-                    System.out.println("EEEEEEEEE");
+                    // System.out.println("EEEEEEEEE");
                     sellHouse();
                 }
                 if(money > 0)
-                    return money;
+                    return amount;
                 else
+                {
                     System.out.println(name + " is still broke after selling all houses. BANKRUPT!");
+                    return preMoney;
+                }    
             }          
           }
 
-        if (money >= amount) {
+        else{
             money -= amount;
             return amount;
-        } else {
-            money -= amount;
-            return money;
-        }
+        } 
+        // else {
+        //     money -= amount;
+        //     return money;
+        // }
+        return amount;
     }
 
     public boolean offerToBuySpace(Space space) {
