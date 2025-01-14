@@ -166,6 +166,7 @@ public class Main {
             }
 
             currentPlayer.buildHouses(buildHouseIteration);
+            buildHouseIteration = 0; //test
             currentPlayer.offerTrades();
             System.out.println("DEBUG: NEXT PLAYER");
             System.out.println("Current player money: " + currentPlayer.money + "");
