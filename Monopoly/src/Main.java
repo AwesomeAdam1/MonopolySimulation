@@ -158,7 +158,14 @@ public class Main {
                 }
             }
 
-            currentPlayer.buildHouses();
+            int buildHouseIteration = 0;
+            for(Space space : currentPlayer.spaces)
+            {
+                if(space instanceof Property)
+                    buildHouseIteration++;
+            }
+
+            currentPlayer.buildHouses(buildHouseIteration);
             currentPlayer.offerTrades();
             System.out.println("DEBUG: NEXT PLAYER");
             System.out.println("Current player money: " + currentPlayer.money + "");
