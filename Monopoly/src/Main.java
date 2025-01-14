@@ -2,46 +2,46 @@ import java.util.ArrayList;
 
 public class Main {
     public static Space[] board = {
-        new Go(),
-        new Property("Mediterranean Avenue", "Purple", 60, 50, new int[]{2, 10, 30, 90, 160, 250}, 30),
-        new CommunityChest(),
+            new Go(),
+            new Property("Mediterranean Avenue", "Purple", 60, 50, new int[]{2, 10, 30, 90, 160, 250}, 30),
+            new CommunityChest(),
             new Property("Baltic Avenue", "Purple", 60, 50, new int[]{4, 20, 60, 180, 320, 450}, 30),
-        new Tax("Income Tax", true),
-        new Railroad("Reading Railroad"),
-        new Property("Oriental Avenue", "LightBlue", 100, 50, new int[]{6, 30, 90, 270, 400, 550}, 50),
-        new Chance(),
-        new Property("Vermont Avenue", "LightBlue", 100, 50, new int[]{6, 30, 90, 270, 400, 550}, 50),
-        new Property("Connecticut Avenue", "LightBlue", 120, 50, new int[]{8, 40, 100, 300, 450, 600}, 60),
-        new Jail(),
-        new Property("St. Charles Place", "Pink", 140, 100, new int[]{10, 50, 150, 450, 625, 750}, 70),
-        new Utility("Electric Company"),
-        new Property("States Avenue", "Pink", 140, 100, new int[]{10, 50, 150, 450, 625, 750}, 70),
-        new Property("Virginia Avenue", "Pink", 160, 100, new int[]{12, 60, 180, 500, 700, 900}, 80),
-        new Railroad("Pennsylvania Railroad"),
-        new Property("St. James Place", "Orange", 180, 100, new int[]{14, 70, 200, 550, 750, 950}, 90),
-        new CommunityChest(),
-        new Property("Tennessee Avenue", "Orange", 180, 100, new int[]{14, 70, 200, 550, 750, 950}, 90),
-        new Property("New York Avenue", "Orange", 200, 100, new int[]{16, 80, 220, 600, 800, 1000}, 100),
-        new FreeParking(),
-        new Property("Kentucky Avenue", "Red", 220, 150, new int[]{18, 90, 250, 700, 875, 1050}, 110),
-        new Chance(),
-        new Property("Indiana Avenue", "Red", 220, 150, new int[]{18, 90, 250, 700, 875, 1050}, 110),
-        new Property("Illinois Avenue", "Red", 240, 150, new int[]{20, 100, 300, 750, 925, 1100}, 120),
-        new Railroad("B. & O. Railroad"),
-        new Property("Atlantic Avenue", "Yellow", 260, 150, new int[]{22, 110, 330, 800, 975, 1150}, 130),
-        new Property("Ventnor Avenue", "Yellow", 260, 150, new int[]{22, 110, 330, 800, 975, 1150}, 130),
-        new Utility("Water Works"),
-        new Property("Marvin Gardens", "Yellow", 280, 150, new int[]{24, 120, 360, 850, 1025, 1200}, 140),
-        new GoToJail(),
-        new Property("Pacific Avenue", "Green", 300, 200, new int[]{26, 130, 390, 900, 1100, 1275}, 150),
-        new Property("North Carolina Avenue", "Green", 300, 200, new int[]{26, 130, 390, 900, 1100, 1275}, 150),
-        new CommunityChest(),
-        new Property("Pennsylvania Avenue", "Green", 320, 200, new int[]{28, 150, 450, 1000, 1200, 1400}, 160),
-        new Railroad("Short Line"),
-        new Chance(),
-        new Property("Park Place", "Blue", 350, 200, new int[]{35, 175, 500, 1100, 1300, 1500}, 175),
-        new Tax("Luxury Tax", false),
-        new Property("Boardwalk", "Blue", 400, 200, new int[]{50, 200, 600, 1400, 1700, 2000}, 200),
+            new Tax("Income Tax", true),
+            new Railroad("Reading Railroad"),
+            new Property("Oriental Avenue", "LightBlue", 100, 50, new int[]{6, 30, 90, 270, 400, 550}, 50),
+            new Chance(),
+            new Property("Vermont Avenue", "LightBlue", 100, 50, new int[]{6, 30, 90, 270, 400, 550}, 50),
+            new Property("Connecticut Avenue", "LightBlue", 120, 50, new int[]{8, 40, 100, 300, 450, 600}, 60),
+            new Jail(),
+            new Property("St. Charles Place", "Pink", 140, 100, new int[]{10, 50, 150, 450, 625, 750}, 70),
+            new Utility("Electric Company"),
+            new Property("States Avenue", "Pink", 140, 100, new int[]{10, 50, 150, 450, 625, 750}, 70),
+            new Property("Virginia Avenue", "Pink", 160, 100, new int[]{12, 60, 180, 500, 700, 900}, 80),
+            new Railroad("Pennsylvania Railroad"),
+            new Property("St. James Place", "Orange", 180, 100, new int[]{14, 70, 200, 550, 750, 950}, 90),
+            new CommunityChest(),
+            new Property("Tennessee Avenue", "Orange", 180, 100, new int[]{14, 70, 200, 550, 750, 950}, 90),
+            new Property("New York Avenue", "Orange", 200, 100, new int[]{16, 80, 220, 600, 800, 1000}, 100),
+            new FreeParking(),
+            new Property("Kentucky Avenue", "Red", 220, 150, new int[]{18, 90, 250, 700, 875, 1050}, 110),
+            new Chance(),
+            new Property("Indiana Avenue", "Red", 220, 150, new int[]{18, 90, 250, 700, 875, 1050}, 110),
+            new Property("Illinois Avenue", "Red", 240, 150, new int[]{20, 100, 300, 750, 925, 1100}, 120),
+            new Railroad("B. & O. Railroad"),
+            new Property("Atlantic Avenue", "Yellow", 260, 150, new int[]{22, 110, 330, 800, 975, 1150}, 130),
+            new Property("Ventnor Avenue", "Yellow", 260, 150, new int[]{22, 110, 330, 800, 975, 1150}, 130),
+            new Utility("Water Works"),
+            new Property("Marvin Gardens", "Yellow", 280, 150, new int[]{24, 120, 360, 850, 1025, 1200}, 140),
+            new GoToJail(),
+            new Property("Pacific Avenue", "Green", 300, 200, new int[]{26, 130, 390, 900, 1100, 1275}, 150),
+            new Property("North Carolina Avenue", "Green", 300, 200, new int[]{26, 130, 390, 900, 1100, 1275}, 150),
+            new CommunityChest(),
+            new Property("Pennsylvania Avenue", "Green", 320, 200, new int[]{28, 150, 450, 1000, 1200, 1400}, 160),
+            new Railroad("Short Line"),
+            new Chance(),
+            new Property("Park Place", "Blue", 350, 200, new int[]{35, 175, 500, 1100, 1300, 1500}, 175),
+            new Tax("Luxury Tax", false),
+            new Property("Boardwalk", "Blue", 400, 200, new int[]{50, 200, 600, 1400, 1700, 2000}, 200),
     };
     public static ArrayList<Player> players = new ArrayList<>();
 
@@ -49,16 +49,16 @@ public class Main {
         int maxIterations = 5000;
         int playerIndex = 0;
         int iterations = 1;
-        players.add(new Player("Player1", 0.5, 0.5, 0.5, 0.5, 0.5));
-        players.add(new Player("Player2", 0.5, 0.5, 0.5,0.5,0.5));
-        players.add(new Player("Player3", 0.5, 0.5, 0.5,0.5,0.5));
-        players.add(new Player("Player4", 0.5, 0.5, 0.5,0.5,0.5));
+        players.add(new Player("Player1", 0.5, 0.5, 0.5, 0.5));
+        players.add(new Player("Player2", 0.5, 0.5, 0.5,0.5));
+        players.add(new Player("Player3", 0.5, 0.5, 0.5,0.5));
+        players.add(new Player("Player4", 0.5, 0.5, 0.5,0.5));
 
         while (iterations <= maxIterations && players.size() >= 2) {
             Player currentPlayer = players.get(playerIndex);
             System.out.printf("========== Iteration %d - %s =========\n", iterations, currentPlayer.name);
             System.out.printf("On %s\n", board[currentPlayer.positionIndex].toString());
-            
+
             int doublesCount = 0;
             int roll1 = -1;
             int roll2 = -1;
@@ -73,7 +73,7 @@ public class Main {
                 //Check doubles
                 if (roll1 == roll2) {
                     System.out.println("DOUBLES! Free get out of jail");
-                    currentPlayer.positionIndex = (currentPlayer.positionIndex + roll1 + roll2);
+                    currentPlayer.positionIndex = (currentPlayer.positionIndex + roll1 + roll2) % 40;
                     System.out.printf("Landed on %s\n", board[currentPlayer.positionIndex].toString());
                     currentPlayer.inJail = false;
 
@@ -92,7 +92,7 @@ public class Main {
                     currentPlayer.inJail = false;
 
                     if (currentPlayer.money >= 0) {
-                        currentPlayer.positionIndex = (currentPlayer.positionIndex + roll1 + roll2);
+                        currentPlayer.positionIndex = (currentPlayer.positionIndex + roll1 + roll2) % 40;
                         System.out.printf("Landed on %s\n", board[currentPlayer.positionIndex].toString());
 
                         //Do action on space
@@ -161,13 +161,14 @@ public class Main {
             System.out.println("DEBUG: NEXT PLAYER");
 
             //Checks bankruptcy
+
             if (currentPlayer.money <= 0) {
 
-                    System.out.println("BANKRUPT! Player is removed.");
-                    players.remove(playerIndex);
-                    playerIndex--;
-                }    
+                System.out.println("BANKRUPT! Player is removed.");
+                players.remove(playerIndex);
+                playerIndex--;
             }
+
 
             System.out.println("");
             iterations++;
@@ -185,3 +186,4 @@ public class Main {
             }
         }
     }
+}
