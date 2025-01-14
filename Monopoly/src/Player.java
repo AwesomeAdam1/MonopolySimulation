@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 
 public class Player {
     public ArrayList<Space> spaces = new ArrayList<>();
@@ -11,12 +12,14 @@ public class Player {
     public double houseManagement;
     public double propertyManagement;
     public double riskAppetite;
+    public double tradingStrategy;
 
-    public Player(String name, double houseManagement, double propertyManagement, double riskAppetite) {
+    public Player(String name, double houseManagement, double propertyManagement, double riskAppetite, double tradingStrategy) {
         this.name = name;
         this.houseManagement = houseManagement;
         this.propertyManagement = propertyManagement;
         this.riskAppetite = riskAppetite;
+        this.tradingStrategy = tradingStrategy;
     }
 
     public void addSpace(Space space){
@@ -151,21 +154,6 @@ public class Player {
         return player.name.equals(name);
     }
 
-
-
-    //Trading logic and code begins here. Idk what im doing tbh adam pls revise later
-
-    //Use this class to check for trade success. (@AwesomeAdam1 do you want to assume that if the 
-    // initate trade player passes the check the trade will always succeed? Or do both players,
-    // on both ends of the trade, both have to pask the riskCheck?)
-    private boolean tradeRiskCheck(double riskAppetite){
-        //(0.5 + (this.riskAppetite/2))) accounts for probability of success
-        return (Math.random() <=  (0.5 + (this.riskAppetite/2)));
-    }
-
-
-
-
     //Checks if player owns specificed color group for house building
     public boolean ownsColorGroup(String colorGroup) {
         int hasColor = 0;
@@ -189,6 +177,118 @@ public class Player {
             return true;
         else
             return false;        
+    }
+
+    public void offerTrades() {
+        //Gets possible properties that player wants
+        HashSet<String> wantedProperties = new HashSet<>();
+        for (Space s : spaces) {
+            if (s instanceof Property property) {
+                wantedProperties.add(property.color);
+            }
+            if (s instanceof Railroad) {
+                wantedProperties.add("Railroad");
+            }
+            if (s instanceof Utility) {
+                wantedProperties.add("Utility");
+            }
+        }
+
+        System.out.println("DEBUG: FLAG AFTER SET");
+
+        for (Player p : Main.players) {
+            for (int i = 0; i < p.spaces.size(); i++) {
+                Space s = p.spaces.get(i);
+                if (s instanceof Property) {
+                    Property property = (Property) s;
+                    if (wantedProperties.contains(property.color)) {
+                        //Make a tradeOffer
+                        Space toGiveSpace = findClosestValueSpace(property.price, property.color);
+                        if (toGiveSpace != null) {
+                            ArrayList<Space> player1Spaces = new ArrayList<>();
+                            player1Spaces.add(toGiveSpace);
+                            ArrayList<Space> player2Spaces = new ArrayList<>();
+                            player2Spaces.add(s);
+                            TradeOffer tradeOffer = new TradeOffer(player1Spaces, 0, player2Spaces, 0, this, p);
+                            p.considerIncomingTradeOffer(tradeOffer);
+                            break;
+                        }
+                    }
+                }
+                if (s instanceof Railroad) {
+                    Railroad railroad = (Railroad) s;
+                    if (wantedProperties.contains("Railroad")) {
+                        //Make a tradeOffer
+                        Space toGiveSpace = findClosestValueSpace(railroad.price, "Railroad");
+                        if (toGiveSpace != null) {
+                            ArrayList<Space> player1Spaces = new ArrayList<>();
+                            player1Spaces.add(toGiveSpace);
+                            ArrayList<Space> player2Spaces = new ArrayList<>();
+                            player2Spaces.add(s);
+                            TradeOffer tradeOffer = new TradeOffer(player1Spaces, 0, player2Spaces, 0, this, p);
+                            p.considerIncomingTradeOffer(tradeOffer);
+                        }
+                    }
+                }
+                if (s instanceof Utility) {
+                    Utility utility = (Utility) s;
+                    if (wantedProperties.contains("Utility")) {
+                        //Make a tradeOffer
+                        Space toGiveSpace = findClosestValueSpace(utility.price, "Utility");
+                        if (toGiveSpace != null) {
+                            ArrayList<Space> player1Spaces = new ArrayList<>();
+                            player1Spaces.add(toGiveSpace);
+                            ArrayList<Space> player2Spaces = new ArrayList<>();
+                            player2Spaces.add(s);
+                            TradeOffer tradeOffer = new TradeOffer(player1Spaces, 0, player2Spaces, 0, this, p);
+                            p.considerIncomingTradeOffer(tradeOffer);
+                        }
+                    }
+                }
+            }
+        }
+        System.out.println("FLAG FINISH TRADES");
+    }
+
+    public Space findClosestValueSpace(int targetValue, String dontTradeTag) {
+        int distanceFromTarget = 99999;
+        Space toGive = null;
+        for (Space s : spaces) {
+            if (s instanceof Property) {
+                Property property = (Property) s;
+                if (!property.color.equals(dontTradeTag)) {
+                    if (Math.abs(property.price - targetValue) <= distanceFromTarget) {
+                        distanceFromTarget = Math.abs(property.price - targetValue);
+                        toGive = s;
+                    }
+                }
+            }
+            if (s instanceof Railroad) {
+                Railroad railroad = (Railroad) s;
+                if (!dontTradeTag.equals("Railroad")) {
+                    if (Math.abs(railroad.price - targetValue) <= distanceFromTarget) {
+                        distanceFromTarget = Math.abs(railroad.price - targetValue);
+                        toGive = s;
+                    }
+                }
+            }
+            if (s instanceof Utility) {
+                Utility utility = (Utility) s;
+                if (!dontTradeTag.equals("Utility")) {
+                    if (Math.abs(utility.price - targetValue) <= distanceFromTarget) {
+                        distanceFromTarget = Math.abs(utility.price - targetValue);
+                        toGive = s;
+                    }
+                }
+            }
+        }
+        return toGive;
+    }
+
+    public void considerIncomingTradeOffer(TradeOffer tradeOffer) {
+        if (Math.random() < tradingStrategy) {
+            tradeOffer.trade();
+        }
     }
 }
 
