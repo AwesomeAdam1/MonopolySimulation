@@ -162,6 +162,7 @@ public class Player {
         for (int i = 0; i < iterationCount; i++) 
         {
             if (Math.random() < houseManagement) {
+                System.out.println("check passed");
                 ArrayList<Space> spaces = this.spaces;
                 ArrayList<Property> buildableProperties = getBuildableProperties(spaces);
                 HashMap<String, ArrayList<Property>> propertiesByColor = new HashMap<>();
@@ -371,9 +372,15 @@ public class Player {
             }        
         }
         if((colorGroup.equals("Purple") || colorGroup.equals("Blue")) && hasColor == 2)
+        {
+            System.out.println("Group Owned");
             return true;
+        }    
         else if(hasColor == 3)
+        {    
+            System.out.println("group owned");
             return true;
+        }    
         else
             return false;        
     }

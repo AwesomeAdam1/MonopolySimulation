@@ -46,7 +46,7 @@ public class Main {
     public static ArrayList<Player> players = new ArrayList<>();
 
     public static void main(String[] args) {
-        int maxIterations = 5000;
+        int maxIterations = 2500;
         int playerIndex = 0;
         int iterations = 1;
         players.add(new Player("Player1", 0.5, 0.5, 0.5, 0.5, 0.5));
@@ -93,8 +93,16 @@ public class Main {
 
                     if (currentPlayer.money >= 0) {
                         currentPlayer.positionIndex = (currentPlayer.positionIndex + roll1 + roll2) % 40;
-                        System.out.printf("Landed on %s\n", board[currentPlayer.positionIndex].toString());
-
+                        if(board[currentPlayer.positionIndex] instanceof Property)
+                        {
+                            Property temp = (Property) board[currentPlayer.positionIndex];
+                            System.out.printf("Landed on %s\n", board[currentPlayer.positionIndex].toString() + " which has " + 
+                            temp.houses + " houses which costs $" + temp.rent[temp.houses]);
+                        }
+                        else
+                        {
+                            System.out.printf("Landed on %s\n", board[currentPlayer.positionIndex].toString());
+                        }
                         //Do action on space
                         if (board[currentPlayer.positionIndex] instanceof Utility) {
                             ((Utility) board[currentPlayer.positionIndex]).doAction(currentPlayer, roll1 * 2);
@@ -125,7 +133,16 @@ public class Main {
                     roll2 = Dice.roll();
                     currentPlayer.positionIndex = ((currentPlayer.positionIndex + roll1 + roll2) % 40);
                     System.out.printf("Rolled a %d and a %d\n", roll1, roll2);
-                    System.out.printf("Landed on %s\n", board[currentPlayer.positionIndex].toString());
+                    if(board[currentPlayer.positionIndex] instanceof Property)
+                    {
+                        Property temp = (Property) board[currentPlayer.positionIndex];
+                        System.out.printf("Landed on %s\n", board[currentPlayer.positionIndex].toString() + " which has " + 
+                        temp.houses + " houses which costs $" + temp.rent[temp.houses]);
+                    }
+                    else
+                    {
+                        System.out.printf("Landed on %s\n", board[currentPlayer.positionIndex].toString());
+                    }
 
                     //Passed Go
                     if (currentPlayer.positionIndex - roll1 - roll2 <= 0) {
@@ -173,7 +190,34 @@ public class Main {
             //Checks bankruptcy
 
             if (currentPlayer.money <= 0) {
-                System.out.println("BANKRUPT! Player is removed.");
+                System.out.println("BANKRUPT! "+ currentPlayer.name + " is removed.");
+                Space space = board[currentPlayer.positionIndex];
+                Player propOwner = null;
+                if (space instanceof Property) {
+                    Property property = (Property) space;
+                    propOwner = property.owner;
+                }
+                if (space instanceof Railroad) {
+                    Railroad railroad = (Railroad) space;
+                    propOwner = railroad.owner;
+                }
+                if (space instanceof Utility) {
+                    Utility utility = (Utility) space;
+                    propOwner = utility.owner;
+                }
+                if(space instanceof Tax)
+                {
+                    players.remove(playerIndex);
+                    playerIndex--;
+                    break;
+                }
+
+                System.out.println("The player was bankrupted by " + propOwner.toString());
+                for (int i = 0; i < currentPlayer.spaces.size(); i++) {
+                    propOwner.addSpace(currentPlayer.spaces.get(i));
+                    System.out.println(currentPlayer.spaces.get(i).toString() + " has been transfered to " + propOwner.name + 
+                    " from " + currentPlayer.toString());
+                }
                 players.remove(playerIndex);
                 playerIndex--;
             }
