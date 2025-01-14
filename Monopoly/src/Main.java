@@ -162,9 +162,11 @@ public class Main {
 
             //Checks bankruptcy
             if (currentPlayer.money <= 0) {
-                System.out.println("BANKRUPT! Player is removed.");
-                players.remove(playerIndex);
-                playerIndex--;
+
+                    System.out.println("BANKRUPT! Player is removed.");
+                    players.remove(playerIndex);
+                    playerIndex--;
+                }    
             }
 
             System.out.println("");
@@ -183,4 +185,3 @@ public class Main {
             }
         }
     }
-}
