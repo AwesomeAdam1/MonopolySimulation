@@ -23,7 +23,7 @@ public class Property extends Space {
 
     public void doAction(Player player) {
         if (owner != null && owner.equals(player)) {
-            System.out.println("Player owned!");
+            //System.out.println("Player owned!");
             return;
         }
 
@@ -31,9 +31,9 @@ public class Property extends Space {
             //Pay player
             int payAmount = player.payAmount(rent[houses]);
             owner.money += payAmount;
-            System.out.printf("%s has been paid $%d by %s\n", owner.name, payAmount, player.name);
-            System.out.printf("%s now has $%d\n", owner.name, owner.money);
-            System.out.printf("%s now has $%d\n", player.name, player.money);
+            //System.out.printf("%s has been paid $%d by %s\n", owner.name, payAmount, player.name);
+            //System.out.printf("%s now has $%d\n", owner.name, owner.money);
+            //System.out.printf("%s now has $%d\n", player.name, player.money);
             if (player.money < 0) {
                 player.setOwnersOfSpaces(owner);
             }
@@ -43,11 +43,11 @@ public class Property extends Space {
                 owner = player;
                 owned = true;
                 player.addSpace(this);
-                System.out.printf("%s bought %s\n", player.name, name);
-                System.out.println("Property purchased");
+                //System.out.printf("%s bought %s\n", player.name, name);
+                //System.out.println("Property purchased");
             } else {
                 //Rejects property -> put for auction
-                System.out.println("Player rejected direct purchase!");
+                //System.out.println("Player rejected direct purchase!");
                 ArrayList<Player> playersInAuction = (ArrayList<Player>) Main.players.clone();
                 playersInAuction.remove(player);
 
@@ -57,14 +57,14 @@ public class Property extends Space {
                     int bid = playersInAuction.get(index).bid(biddingPrice, this);
                     if (bid == 0) {
                         //Does not want to bid
-                        System.out.printf("%s dropped out of bidding.\n", playersInAuction.get(index).name);
+                        //System.out.printf("%s dropped out of bidding.\n", playersInAuction.get(index).name);
                         playersInAuction.remove(index);
                         index %= playersInAuction.size();
                         continue;
                     } else {
                         //Overbids
                         biddingPrice = bid;
-                        System.out.printf("%s bid %d\n", playersInAuction.get(index).name, biddingPrice);
+                        //System.out.printf("%s bid %d\n", playersInAuction.get(index).name, biddingPrice);
                     }
                     index = (index + 1) % playersInAuction.size();
                 }
@@ -75,9 +75,9 @@ public class Property extends Space {
                     int bid = playersInAuction.get(0).bid(biddingPrice, this);
                     if (bid == 0) {
                         //No one bids
-                        System.out.printf("No one bid on %s", name);
+                        //System.out.printf("No one bid on %s", name);
                     } else {
-                        System.out.printf("%s won %s for %d\n", playersInAuction.get(0).name, name, biddingPrice);
+                        //System.out.printf("%s won %s for %d\n", playersInAuction.get(0).name, name, biddingPrice);
                         Player winner = playersInAuction.get(0);
                         winner.money -= biddingPrice;
                         owner = winner;
@@ -86,7 +86,7 @@ public class Property extends Space {
                     }
                 } else {
                     //Has a winner where someone willingly bids
-                    System.out.printf("%s won %s for %d\n", playersInAuction.get(0).name, name, biddingPrice);
+                    //System.out.printf("%s won %s for %d\n", playersInAuction.get(0).name, name, biddingPrice);
                     Player winner = playersInAuction.get(0);
                     winner.money -= biddingPrice;
                     owner = winner;

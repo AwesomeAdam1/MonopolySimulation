@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class Main {
-    public static Space[] board = {
+    public Space[] board = {
             new Go(),
             new Property("Mediterranean Avenue", "Purple", 60, 50, new int[]{2, 10, 30, 90, 160, 250}, 30),
             new CommunityChest(),
@@ -45,19 +45,15 @@ public class Main {
     };
     public static ArrayList<Player> players = new ArrayList<>();
 
-    public static void main(String[] args) {
-        int maxIterations = 5000;
+    public Main(ArrayList<Player> newPlayers) {
+        int maxIterations = 1000;
         int playerIndex = 0;
         int iterations = 1;
-        players.add(new Player("Player1", 1, 0.5, 0.5, 0.5, 0.5));
-        players.add(new Player("Player2", 1, 0.5, 0.5,0.5, 0.5));
-        players.add(new Player("Player3", 1, 0.5, 0.5,0.5, 0.5));
-        players.add(new Player("Player4", 1, 0.5, 0.5,0.5, 0.5));
-
+        players = newPlayers;
         while (iterations <= maxIterations && players.size() >= 2) {
             Player currentPlayer = players.get(playerIndex);
-            System.out.printf("========== Iteration %d - %s =========\n", iterations, currentPlayer.name);
-            System.out.printf("On %s\n", board[currentPlayer.positionIndex].toString());
+            //System.out.printf("========== Iteration %d - %s =========\n", iterations, currentPlayer.name);
+            //System.out.printf("On %s\n", board[currentPlayer.positionIndex].toString());
 
             int doublesCount = 0;
             int roll1 = -1;
@@ -65,16 +61,16 @@ public class Main {
 
             //Decides if player wants to stay in jail
             if (currentPlayer.inJail) {
-                System.out.printf("In Jail. %d turns left\n", --currentPlayer.jailTimeLeft);
+                //System.out.printf("In Jail. %d turns left\n", --currentPlayer.jailTimeLeft);
                 roll1 = Dice.roll();
                 roll2 = Dice.roll();
-                System.out.printf("Rolled a %d and a %d\n", roll1, roll2);
+                //System.out.printf("Rolled a %d and a %d\n", roll1, roll2);
 
                 //Check doubles
                 if (roll1 == roll2) {
-                    System.out.println("DOUBLES! Free get out of jail");
+                    //System.out.println("DOUBLES! Free get out of jail");
                     currentPlayer.positionIndex = (currentPlayer.positionIndex + roll1 + roll2) % 40;
-                    System.out.printf("Landed on %s\n", board[currentPlayer.positionIndex].toString());
+                    //System.out.printf("Landed on %s\n", board[currentPlayer.positionIndex].toString());
                     currentPlayer.inJail = false;
 
                     //Do action on space
@@ -87,13 +83,13 @@ public class Main {
 
                 //Check if 3 turns have past, if so bail is forced
                 if (currentPlayer.jailTimeLeft == 0 && currentPlayer.inJail) {
-                    System.out.println("3 turns have passed, player is forced to pay $50");
+                    //System.out.println("3 turns have passed, player is forced to pay $50");
                     currentPlayer.payAmount(50);
                     currentPlayer.inJail = false;
 
                     if (currentPlayer.money >= 0) {
                         currentPlayer.positionIndex = (currentPlayer.positionIndex + roll1 + roll2) % 40;
-                        System.out.printf("Landed on %s\n", board[currentPlayer.positionIndex].toString());
+                        //System.out.printf("Landed on %s\n", board[currentPlayer.positionIndex].toString());
 
                         //Do action on space
                         if (board[currentPlayer.positionIndex] instanceof Utility) {
@@ -110,7 +106,7 @@ public class Main {
                 if (currentPlayer.inJail) {
                     boolean result = currentPlayer.payBail();
                     if (result) {
-                        System.out.println("Paid $50 to get out of jail");
+                        //System.out.println("Paid $50 to get out of jail");
                         roll1 = -1;
                         roll2 = -1;
                     }
@@ -124,8 +120,8 @@ public class Main {
                     roll1 = Dice.roll();
                     roll2 = Dice.roll();
                     currentPlayer.positionIndex = ((currentPlayer.positionIndex + roll1 + roll2) % 40);
-                    System.out.printf("Rolled a %d and a %d\n", roll1, roll2);
-                    System.out.printf("Landed on %s\n", board[currentPlayer.positionIndex].toString());
+                    //System.out.printf("Rolled a %d and a %d\n", roll1, roll2);
+                    //System.out.printf("Landed on %s\n", board[currentPlayer.positionIndex].toString());
 
                     //Passed Go
                     if (currentPlayer.positionIndex - roll1 - roll2 <= 0) {
@@ -135,7 +131,7 @@ public class Main {
                     //Check doubles
                     if (roll1 == roll2) {
                         doublesCount++;
-                        System.out.printf("DOUBLES! Doubles Count: %d\n", doublesCount);
+                        //System.out.printf("DOUBLES! Doubles Count: %d\n", doublesCount);
                     }
 
 
@@ -151,7 +147,7 @@ public class Main {
 
                 //3 doubles in a row -> jail
                 if (doublesCount == 3) {
-                    System.out.println("Rolled 3 doubles in a row, going to jail.");
+                    //System.out.println("Rolled 3 doubles in a row, going to jail.");
                     currentPlayer.inJail = true;
                     currentPlayer.jailTimeLeft = 3;
                     currentPlayer.positionIndex = 10;
@@ -160,30 +156,42 @@ public class Main {
 
             currentPlayer.buildHouses();
             currentPlayer.offerTrades();
-            System.out.println("DEBUG: NEXT PLAYER");
-            System.out.println("Current player money: " + currentPlayer.money + "");
+            //System.out.println("DEBUG: NEXT PLAYER");
+            //System.out.println("Current player money: " + currentPlayer.money + "");
             //Checks bankruptcy
 
             if (currentPlayer.money <= 0) {
-                System.out.println("BANKRUPT! Player is removed.");
+                //System.out.println("BANKRUPT! Player is removed.");
                 players.remove(playerIndex);
                 playerIndex--;
             }
 
-            System.out.println("");
+            //System.out.println("");
+            printIteration(iterations);
             iterations++;
             playerIndex = (playerIndex + 1) % players.size();
         }
 
-        System.out.println("========== GAME END =========");
-        System.out.println(players.size());
+        //System.out.println("========== GAME END " + iterations + "=========");
+        //System.out.println(players.size());
         for (int i = 0; i < players.size(); i++) {
             Player player = players.get(i);
-            System.out.println(player.toString());
-            System.out.println(player.money);
+            //System.out.println(player.toString());
+            //System.out.println(player.money);
             for (Space s : player.spaces) {
-                System.out.println(s.toString());
+                //System.out.println(s.toString());
             }
         }
+
+
+    }
+
+    public void printIteration(int iteration) {
+        StringBuffer str = new StringBuffer();
+        str.append("G:" + Simulation.game + ",I:" + iteration + ",");
+        for (int i = 0; i < players.size(); i++) {
+            str.append("P" + players.get(i).name.substring(6) + ":" + players.get(i).getNetWorth() + ",");
+        }
+        Simulation.filePrint.println(str);
     }
 }

@@ -1,3 +1,5 @@
+import jdk.jshell.execution.Util;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -24,6 +26,25 @@ public class Player {
         this.riskAppetite = riskAppetite;
         this.tradingStrategy = tradingStrategy;
         this.auctionStrategy = auctionStrategy;
+    }
+
+    public int getNetWorth() {
+        int sum = money;
+        for(Space s : spaces) {
+            if (s instanceof Property) {
+                Property p = (Property) s;
+                sum += p.price + p.houses * p.houseCost;
+            }
+            if (s instanceof Railroad) {
+                Railroad r = (Railroad) s;
+                sum += r.price;
+            }
+            if (s instanceof Utility) {
+                Utility u = (Utility) s;
+                sum += u.price;
+            }
+        }
+        return sum;
     }
 
     public void addSpace(Space space){
@@ -66,6 +87,7 @@ public class Player {
                     utility.owned = true;
                     utility.owner = owner;
                 }
+                owner.addSpace(space);
             }
         }
     }
@@ -88,7 +110,7 @@ public class Player {
                     return amount;
                 else
                 {
-                    System.out.println(name + " is still broke after selling all houses. BANKRUPT!");
+                    //System.out.println(name + " is still broke after selling all houses. BANKRUPT!");
                     return preMoney;
                 }    
             }          
@@ -189,11 +211,11 @@ public void buildHouses() {
                         property.houses += 1;
                         money -= property.houseCost;
 
-                        System.out.printf("%s bought a house on %s for $%d! This makes its rent now: $%d instead of $%d.%n",
-                            name, property.name, property.houseCost,
-                            property.rent[property.houses],
-                            property.rent[property.houses - 1]
-                        );
+//                        System.out.printf("%s bought a house on %s for $%d! This makes its rent now: $%d instead of $%d.%n",
+//                            name, property.name, property.houseCost,
+//                            property.rent[property.houses],
+//                            property.rent[property.houses - 1]
+//                        );
 
                         // Return after building one house to simulate one action per turn.
                         return;
@@ -263,11 +285,11 @@ public void sellHouse()
         }
     }
     Property property = (Property) spaces.get(indexOfSellHouse);
-    System.out.println("Player before house sell balance: " + money);
+    //System.out.println("Player before house sell balance: " + money);
     property.houses--;
     money += property.houseCost;
-    System.out.println(name + " sold a house on " + property.name + " for " + " $" + property.houseCost);
-    System.out.println(name + "'s balance is now " + money);
+    //System.out.println(name + " sold a house on " + property.name + " for " + " $" + property.houseCost);
+    //System.out.println(name + "'s balance is now " + money);
 }
     public int bid(int currentBid, Space space) {
         // auctionStrategy ∈ [0,1) : where every .1 represents max bid will be up to (price * auctionStrategy/0.1)
@@ -390,7 +412,7 @@ public void sellHouse()
             }
         }
 
-        System.out.println("DEBUG: FLAG AFTER SET");
+        //System.out.println("DEBUG: FLAG AFTER SET");
 
         for (Player p : Main.players) {
             //System.out.println("pppppppppppppppppppppppppppppppp");
@@ -399,11 +421,11 @@ public void sellHouse()
                 if (s instanceof Property) {
                     Property property = (Property) s;
                     if (wantedProperties.contains(property.color)) {
-                        System.out.println("DEBUG: FLAG OFFER TRADE");
+                        //System.out.println("DEBUG: FLAG OFFER TRADE");
                         //Make a tradeOffer
                         Space toGiveSpace = findClosestValueSpace(property.price, property.color);
                         if (toGiveSpace != null) {
-                            System.out.println("DEBUG: FLAG MAKE TRADE OFFER");
+                            //System.out.println("DEBUG: FLAG MAKE TRADE OFFER");
                             TradeOffer tradeOffer = new TradeOffer(toGiveSpace, s, this, p);
                             p.considerIncomingTradeOffer(tradeOffer);
                             break;
@@ -436,7 +458,7 @@ public void sellHouse()
                 }
             }
         }
-        System.out.println("FLAG FINISH TRADES");
+        //System.out.println("FLAG FINISH TRADES");
     }
 
     public Space findClosestValueSpace(int targetValue, String dontTradeTag) {

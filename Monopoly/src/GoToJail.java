@@ -3,7 +3,7 @@ public class GoToJail extends Space {
         player.inJail = true;
         player.jailTimeLeft = 3;
         player.positionIndex = 10;
-        System.out.println("Going to Jail!");
+        //System.out.println("Going to Jail!");
     }
 
     public String toString() {

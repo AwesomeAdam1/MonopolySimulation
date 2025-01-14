@@ -32,9 +32,9 @@ public class Utility extends Space {
             }
             int payAmount = player.payAmount(roll * (utilitiesCount == 1 ? 4 : 10));
             owner.money += payAmount;
-            System.out.printf("%s has been paid $%d by %s\n", owner.name, payAmount, player.name);
-            System.out.printf("%s now has $%d\n", owner.name, owner.money);
-            System.out.printf("%s now has $%d\n", player.name, player.money);
+            //System.out.printf("%s has been paid $%d by %s\n", owner.name, payAmount, player.name);
+          //  System.out.printf("%s now has $%d\n", owner.name, owner.money);
+          //  System.out.printf("%s now has $%d\n", player.name, player.money);
             if (player.money < 0) {
                 player.setOwnersOfSpaces(owner);
             }
@@ -44,7 +44,7 @@ public class Utility extends Space {
                 owner = player;
                 owned = true;
                 player.addSpace(this);
-                System.out.printf("%s bought %s\n", player.name, name);
+                //System.out.printf("%s bought %s\n", player.name, name);
             } else {
                 //Rejects property -> put for auction
                 ArrayList<Player> playersInAuction = (ArrayList<Player>) Main.players.clone();
@@ -56,7 +56,7 @@ public class Utility extends Space {
                     int bid = playersInAuction.get(index).bid(biddingPrice, this);
                     if (bid == 0) {
                         //Does not want to bid
-                        System.out.printf("%s dropped out of bidding.\n", playersInAuction.get(index).name);
+                        //System.out.printf("%s dropped out of bidding.\n", playersInAuction.get(index).name);
                         playersInAuction.remove(index);
                         index %= playersInAuction.size();
                         continue;
@@ -74,9 +74,9 @@ public class Utility extends Space {
                     int bid = playersInAuction.get(0).bid(biddingPrice, this);
                     if (bid == 0) {
                         //No one bids
-                        System.out.printf("No one bid on %s", name);
+                       // System.out.printf("No one bid on %s", name);
                     } else {
-                        System.out.printf("%s won %s for %d\n", playersInAuction.get(0).name, name, biddingPrice);
+                       // System.out.printf("%s won %s for %d\n", playersInAuction.get(0).name, name, biddingPrice);
                         Player winner = playersInAuction.get(0);
                         winner.money -= biddingPrice;
                         owner = winner;
@@ -85,7 +85,7 @@ public class Utility extends Space {
                     }
                 } else {
                     //Has a winner where someone willingly bids
-                    System.out.printf("%s won %s for %d\n", playersInAuction.get(0).name, name, biddingPrice);
+                   // System.out.printf("%s won %s for %d\n", playersInAuction.get(0).name, name, biddingPrice);
                     Player winner = playersInAuction.get(0);
                     winner.money -= biddingPrice;
                     owner = winner;
