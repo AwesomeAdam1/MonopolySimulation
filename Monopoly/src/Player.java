@@ -97,44 +97,44 @@ public class Player {
     }    
 
     public void buildHouses() {
-    if(Math.random() < houseManagement){
-        ArrayList<Space> spaces = this.spaces;
-        ArrayList<Property> buildableProperties = getBuildableProperties(spaces);
-        ArrayList<ArrayList<Property>> propertiesByColor = new ArrayList<>();
+        if(Math.random() < houseManagement){
+            ArrayList<Space> spaces = this.spaces;
+            ArrayList<Property> buildableProperties = getBuildableProperties(spaces);
+            ArrayList<ArrayList<Property>> propertiesByColor = new ArrayList<>();
 
-        for (Property property : buildableProperties) {
-            boolean hasGroup = false;
-            for(ArrayList<Property> group : propertiesByColor)
-            {
-                if(group.get(0).color.equals(property.color))
+            for (Property property : buildableProperties) {
+                boolean hasGroup = false;
+                for(ArrayList<Property> group : propertiesByColor)
                 {
-                    group.add(property);
-                    hasGroup = true;
-                    break;
+                    if(group.get(0).color.equals(property.color))
+                    {
+                        group.add(property);
+                        hasGroup = true;
+                        break;
+                    }
+                }
+                if(!hasGroup){
+                    propertiesByColor.add(new ArrayList<>(Arrays.asList(property)));
                 }
             }
-            if(!hasGroup){
-                propertiesByColor.add(new ArrayList<>(Arrays.asList(property)));
-            }
-        }
 
-       if (buildableProperties.size() > 0) {
-            for (int houseLevel = 1; houseLevel <= 4; houseLevel++) { // Check for every house level.
-                 for(ArrayList<Property> group : propertiesByColor){ //Iterate through every group.
-                    sortPropertiesByHouseCost(group);
-                   for(Property property : group){ //Try to build on every property
-                        if(property.houses == houseLevel -1 &&  money > property.houseCost)
-                       {
-                           property.houses += 1;
-                            money -= property.houseCost;
-                           System.out.println(name + " bought a house on " + property.name + " for $" + property.houseCost + "! This makes its rent now: $" + property.rent[property.houses] +
-                               " instead of $" + property.rent[property.houses - 1]);
-                           return;
-                        }
+           if (buildableProperties.size() > 0) {
+                for (int houseLevel = 1; houseLevel <= 4; houseLevel++) { // Check for every house level.
+                     for(ArrayList<Property> group : propertiesByColor){ //Iterate through every group.
+                        sortPropertiesByHouseCost(group);
+                       for(Property property : group){ //Try to build on every property
+                            if(property.houses == houseLevel -1 &&  money > property.houseCost)
+                           {
+                               property.houses += 1;
+                                money -= property.houseCost;
+                               System.out.println(name + " bought a house on " + property.name + " for $" + property.houseCost + "! This makes its rent now: $" + property.rent[property.houses] +
+                                   " instead of $" + property.rent[property.houses - 1]);
+                               return;
+                            }
+                       }
                    }
                }
            }
-        }
        }
    }
 
@@ -262,19 +262,18 @@ public class Player {
         System.out.println("DEBUG: FLAG AFTER SET");
 
         for (Player p : Main.players) {
+            //System.out.println("pppppppppppppppppppppppppppppppp");
             for (int i = 0; i < p.spaces.size(); i++) {
                 Space s = p.spaces.get(i);
                 if (s instanceof Property) {
                     Property property = (Property) s;
                     if (wantedProperties.contains(property.color)) {
+                        System.out.println("DEBUG: FLAG OFFER TRADE");
                         //Make a tradeOffer
                         Space toGiveSpace = findClosestValueSpace(property.price, property.color);
                         if (toGiveSpace != null) {
-                            ArrayList<Space> player1Spaces = new ArrayList<>();
-                            player1Spaces.add(toGiveSpace);
-                            ArrayList<Space> player2Spaces = new ArrayList<>();
-                            player2Spaces.add(s);
-                            TradeOffer tradeOffer = new TradeOffer(player1Spaces, 0, player2Spaces, 0, this, p);
+                            System.out.println("DEBUG: FLAG MAKE TRADE OFFER");
+                            TradeOffer tradeOffer = new TradeOffer(toGiveSpace, s, this, p);
                             p.considerIncomingTradeOffer(tradeOffer);
                             break;
                         }
@@ -286,12 +285,9 @@ public class Player {
                         //Make a tradeOffer
                         Space toGiveSpace = findClosestValueSpace(railroad.price, "Railroad");
                         if (toGiveSpace != null) {
-                            ArrayList<Space> player1Spaces = new ArrayList<>();
-                            player1Spaces.add(toGiveSpace);
-                            ArrayList<Space> player2Spaces = new ArrayList<>();
-                            player2Spaces.add(s);
-                            TradeOffer tradeOffer = new TradeOffer(player1Spaces, 0, player2Spaces, 0, this, p);
+                            TradeOffer tradeOffer = new TradeOffer(toGiveSpace, s, this, p);
                             p.considerIncomingTradeOffer(tradeOffer);
+                            break;
                         }
                     }
                 }
@@ -301,12 +297,9 @@ public class Player {
                         //Make a tradeOffer
                         Space toGiveSpace = findClosestValueSpace(utility.price, "Utility");
                         if (toGiveSpace != null) {
-                            ArrayList<Space> player1Spaces = new ArrayList<>();
-                            player1Spaces.add(toGiveSpace);
-                            ArrayList<Space> player2Spaces = new ArrayList<>();
-                            player2Spaces.add(s);
-                            TradeOffer tradeOffer = new TradeOffer(player1Spaces, 0, player2Spaces, 0, this, p);
+                            TradeOffer tradeOffer = new TradeOffer(toGiveSpace, s, this, p);
                             p.considerIncomingTradeOffer(tradeOffer);
+                            break;
                         }
                     }
                 }
@@ -317,11 +310,15 @@ public class Player {
 
     public Space findClosestValueSpace(int targetValue, String dontTradeTag) {
         int distanceFromTarget = 99999;
+        //System.out.println(dontTradeTag);
         Space toGive = null;
         for (Space s : spaces) {
+            //System.out.println("00000000000000000000000000");
             if (s instanceof Property) {
                 Property property = (Property) s;
+                //System.out.println("111111111111111111111111111111111111111");
                 if (!property.color.equals(dontTradeTag)) {
+                    //System.out.println("222222222222222222222222222222222222");
                     if (Math.abs(property.price - targetValue) <= distanceFromTarget) {
                         distanceFromTarget = Math.abs(property.price - targetValue);
                         toGive = s;
