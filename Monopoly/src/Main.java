@@ -191,33 +191,33 @@ public class Main {
 
             if (currentPlayer.money <= 0) {
                 System.out.println("BANKRUPT! "+ currentPlayer.name + " is removed.");
-                Space space = board[currentPlayer.positionIndex];
-                Player propOwner = null;
-                if (space instanceof Property) {
-                    Property property = (Property) space;
-                    propOwner = property.owner;
-                }
-                if (space instanceof Railroad) {
-                    Railroad railroad = (Railroad) space;
-                    propOwner = railroad.owner;
-                }
-                if (space instanceof Utility) {
-                    Utility utility = (Utility) space;
-                    propOwner = utility.owner;
-                }
-                if(space instanceof Tax)
-                {
-                    players.remove(playerIndex);
-                    playerIndex--;
-                    break;
-                }
+                // Space space = board[currentPlayer.positionIndex];
+                // Player propOwner = null;
+                // if (space instanceof Property) {
+                //     Property property = (Property) space;
+                //     propOwner = property.owner;
+                // }
+                // if (space instanceof Railroad) {
+                //     Railroad railroad = (Railroad) space;
+                //     propOwner = railroad.owner;
+                // }
+                // if (space instanceof Utility) {
+                //     Utility utility = (Utility) space;
+                //     propOwner = utility.owner;
+                // }
+                // if(space instanceof Tax)
+                // {
+                //     players.remove(playerIndex);
+                //     playerIndex--;
+                //     break;
+                // }
 
-                System.out.println("The player was bankrupted by " + propOwner.toString());
-                for (int i = 0; i < currentPlayer.spaces.size(); i++) {
-                    propOwner.addSpace(currentPlayer.spaces.get(i));
-                    System.out.println(currentPlayer.spaces.get(i).toString() + " has been transfered to " + propOwner.name + 
-                    " from " + currentPlayer.toString());
-                }
+                // System.out.println("The player was bankrupted by " + propOwner.toString());
+                // for (int i = 0; i < currentPlayer.spaces.size(); i++) {
+                //     propOwner.addSpace(currentPlayer.spaces.get(i));
+                //     System.out.println(currentPlayer.spaces.get(i).toString() + " has been transferred to " + propOwner.name + 
+                //     " from " + currentPlayer.toString());
+                // }
                 players.remove(playerIndex);
                 playerIndex--;
             }

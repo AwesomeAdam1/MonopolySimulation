@@ -66,6 +66,7 @@ public class Player {
                     utility.owned = true;
                     utility.owner = owner;
                 }
+                owner.addSpace(space);
             }
         }
     }
