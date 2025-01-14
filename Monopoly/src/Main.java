@@ -156,6 +156,7 @@ public class Main {
                 }
             }
 
+            //.
             currentPlayer.buildHouses();
             currentPlayer.offerTrades();
             System.out.println("DEBUG: NEXT PLAYER");
