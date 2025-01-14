@@ -77,9 +77,12 @@ public class Player {
         if (amount > money) {
             if(totalNumberOfHouses() > 0)
             {
+                System.out.println("EEEEEEEE");
                 sortCheapest();
+                money -= amount;
                 while(money <= 0 && totalNumberOfHouses() > 0 )
                 {
+                    System.out.println("EEEEEEEEE");
                     sellHouse();
                 }
                 if(money > 0)
@@ -476,45 +479,7 @@ public void sellHouse()
             tradeOffer.trade();
         }
     }
-    public void setOwnersOfSpaces(Player owner) {
-        if (owner == null) {
-            for (Space space : spaces) {
-                if (space instanceof Property) {
-                    Property property = (Property) space;
-                    property.owned = false;
-                    property.owner = null;
-                }
-                if (space instanceof Railroad) {
-                    Railroad railroad = (Railroad) space;
-                    railroad.owned = false;
-                    railroad.owner = null;
-                }
-                if (space instanceof Utility) {
-                    Utility utility = (Utility) space;
-                    utility.owned = false;
-                    utility.owner = null;
-                }
-            }
-        } else {
-            for (Space space : spaces) {
-                if (space instanceof Property) {
-                    Property property = (Property) space;
-                    property.owned = true;
-                    property.owner = owner;
-                }
-                if (space instanceof Railroad) {
-                    Railroad railroad = (Railroad) space;
-                    railroad.owned = true;
-                    railroad.owner = owner;
-                }
-                if (space instanceof Utility) {
-                    Utility utility = (Utility) space;
-                    utility.owned = true;
-                    utility.owner = owner;
-                }
-            }
-        }
-    }
+
 
     public String toString() {
         return name;
