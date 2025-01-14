@@ -49,10 +49,10 @@ public class Main {
         int maxIterations = 5000;
         int playerIndex = 0;
         int iterations = 1;
-        players.add(new Player("Player1", 0.5, 0.5, 0.5, 0.5));
-        players.add(new Player("Player2", 0.5, 0.5, 0.5,0.5));
-        players.add(new Player("Player3", 0.5, 0.5, 0.5,0.5));
-        players.add(new Player("Player4", 0.5, 0.5, 0.5,0.5));
+        players.add(new Player("Player1", 0.5, 0.5, 0.5, 0.5, 0.5));
+        players.add(new Player("Player2", 0.5, 0.5, 0.5,0.5, 0.5));
+        players.add(new Player("Player3", 0.5, 0.5, 0.5,0.5, 0.5));
+        players.add(new Player("Player4", 0.5, 0.5, 0.5,0.5, 0.5));
 
         while (iterations <= maxIterations && players.size() >= 2) {
             Player currentPlayer = players.get(playerIndex);
@@ -164,12 +164,10 @@ public class Main {
             //Checks bankruptcy
 
             if (currentPlayer.money <= 0) {
-
                 System.out.println("BANKRUPT! Player is removed.");
                 players.remove(playerIndex);
                 playerIndex--;
             }
-
 
             System.out.println("");
             iterations++;
