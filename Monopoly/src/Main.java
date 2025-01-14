@@ -5,7 +5,7 @@ public class Main {
         new Go(),
         new Property("Mediterranean Avenue", "Purple", 60, 50, new int[]{2, 10, 30, 90, 160, 250}, 30),
         new CommunityChest(),
-        new Property("Baltic Avenue", "Purple", 60, 50, new int[]{4, 20, 60, 180, 320, 450}, 30),
+            new Property("Baltic Avenue", "Purple", 60, 50, new int[]{4, 20, 60, 180, 320, 450}, 30),
         new Tax("Income Tax", true),
         new Railroad("Reading Railroad"),
         new Property("Oriental Avenue", "LightBlue", 100, 50, new int[]{6, 30, 90, 270, 400, 550}, 50),
@@ -49,10 +49,10 @@ public class Main {
         int maxIterations = 5000;
         int playerIndex = 0;
         int iterations = 1;
-        players.add(new Player("Player1", 0.5, 0.5, 0.5));
-        players.add(new Player("Player2", 0.5, 0.5, 0.5));
-        players.add(new Player("Player3", 0.5, 0.5, 0.5));
-        players.add(new Player("Player4", 0.5, 0.5, 0.5));
+        players.add(new Player("Player1", 0.5, 0.5, 0.5, 0.5, 0.5));
+        players.add(new Player("Player2", 0.5, 0.5, 0.5,0.5,0.5));
+        players.add(new Player("Player3", 0.5, 0.5, 0.5,0.5,0.5));
+        players.add(new Player("Player4", 0.5, 0.5, 0.5,0.5,0.5));
 
         while (iterations <= maxIterations && players.size() >= 2) {
             Player currentPlayer = players.get(playerIndex);
@@ -155,7 +155,11 @@ public class Main {
                     currentPlayer.positionIndex = 10;
                 }
             }
+
             currentPlayer.buildHouses();
+            currentPlayer.offerTrades();
+            System.out.println("DEBUG: NEXT PLAYER");
+
             //Checks bankruptcy
 
             if (currentPlayer.money <= 0) {
@@ -169,12 +173,17 @@ public class Main {
             System.out.println("");
             iterations++;
             playerIndex = (playerIndex + 1) % players.size();
-            /*
-            for (int i = 0; i < 4; i++) {
-                players.get(i).spaces.forEach(System.out::println);    
-            }        
-                */
         }
 
+        System.out.println("========== GAME END =========");
+        System.out.println(players.size());
+        for (int i = 0; i < players.size(); i++) {
+            Player player = players.get(i);
+            System.out.println(player.toString());
+            System.out.println(player.money);
+            for (Space s : player.spaces) {
+                System.out.println(s.toString());
+            }
+        }
     }
 }        
