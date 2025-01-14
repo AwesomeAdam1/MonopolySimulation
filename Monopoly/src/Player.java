@@ -397,5 +397,3 @@ public class Player {
         return name;
     }
 }
-
-
