@@ -101,6 +101,8 @@ public class Main {
                         } else {
                             board[currentPlayer.positionIndex].doAction(currentPlayer);
                         }
+                    } else {
+                        currentPlayer.setOwnersOfSpaces(null);
                     }
                 }
 
