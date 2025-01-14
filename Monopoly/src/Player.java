@@ -34,27 +34,12 @@ public class Player {
 
 
         if (amount > money) {
-            if(totalNumberOfHouses() > 0)
-            {
-                sortCheapest();
-                while(money <= 0 && totalNumberOfHouses() > 0 )
-                {
-                    sellHouse();
-                    System.out.println("ASFOHAISJFHASKJFASHBKLJAHSBFKJABSFJ I GOT CALLED");
-                }
-                if(money > 0)
-                    return money;
-                else
-                    System.out.println(name + " is still broke after selling all houses. BANKRUPT!");
-            }          
-        }
-
-        if (money >= amount) {
-            money -= amount;
-            return amount;
-        } else {
             money -= amount;
             return money;
+        } else {
+            money -= amount;
+            return amount;
+            //bankrupt
         }
     }
 
@@ -86,20 +71,10 @@ public class Player {
         for (int i = 0; i < spaces.size(); i++) {
             if (spaces.get(i) instanceof Property) {
                 Property property = (Property) spaces.get(i);
-                System.out.println("Currently inspected property: " + property.name);
-
-                System.out.println("Owns color group T/F: " + ownsColorGroup(property.color));
-                System.out.println("Number of houses " + property.houses);
-                System.out.println("Affordable? " + (money > property.houseCost));
-                if(property.owner.name.toLowerCase().equals(name.toLowerCase()) && 
-                ownsColorGroup(property.color) && property.houses < 4 && money > property.houseCost)
-                {
+                if(property.owner.name.equals(name) && ownsColorGroup(property.color) && property.houses < 4 && money > property.houseCost)
                     buildableProperties.add(property);
-                    System.out.println("property added " + property.name);
-                }    
              }
         }
-        System.out.println("buildable properties size: " + buildableProperties.size());
         return buildableProperties;
     }
 
@@ -126,11 +101,7 @@ public class Player {
             ArrayList<Space> spaces = this.spaces;
             ArrayList<Property> buildableProperties = getBuildableProperties(spaces);
             ArrayList<ArrayList<Property>> propertiesByColor = new ArrayList<>();
-            System.out.println("Check passed sout buildable properties:");
 
-            for (int i = 0; i < buildableProperties.size(); i++) {
-                System.out.println(buildableProperties.get(i));
-            }
             for (Property property : buildableProperties) {
                 boolean hasGroup = false;
                 for(ArrayList<Property> group : propertiesByColor)
@@ -146,14 +117,12 @@ public class Player {
                     propertiesByColor.add(new ArrayList<>(Arrays.asList(property)));
                 }
             }
-    
+
            if (buildableProperties.size() > 0) {
-            System.out.println("Buildable properties present");
                 for (int houseLevel = 1; houseLevel <= 4; houseLevel++) { // Check for every house level.
                      for(ArrayList<Property> group : propertiesByColor){ //Iterate through every group.
                         sortPropertiesByHouseCost(group);
                        for(Property property : group){ //Try to build on every property
-                        System.out.println("Attempting to build on " + property.name);
                             if(property.houses == houseLevel -1 &&  money > property.houseCost)
                            {
                                property.houses += 1;
@@ -165,10 +134,9 @@ public class Player {
                        }
                    }
                }
-            }
            }
-           System.out.println("House buy terminated");
        }
+   }
 
     public int bid(int currentBid, Space space) {
         // auctionStrategy ∈ [0,1) : where every .1 represents max bid will be up to (price * auctionStrategy/0.1)
@@ -251,72 +219,6 @@ public class Player {
         return player.name.equals(name);
     }
 
-    
-    public int totalNumberOfHouses()
-    {
-        int rtn = 0;
-        for (int i = 0; i < spaces.size(); i++) 
-        {
-            if(spaces.get(i) instanceof Property)
-            {
-                Property property = (Property) spaces.get(i);
-                rtn += property.houses;
-            }
-        }
-        return rtn;
-    }
-    public ArrayList<Property> sortCheapest() // ONLY CALL AFTER CHECKING totalNumberOfHouses() FOR PLAYER > 0
-    {
-        ArrayList<Property> housedProperties = new ArrayList<>();
-        for (int i = 0; i < spaces.size(); i++) 
-        {
-            if(spaces.get(i) instanceof Property)
-            {
-                Property property = (Property) spaces.get(i);
-                if(property.houses > 0)
-                    housedProperties.add(property);
-            }
-        }
-        if(housedProperties.size() == 1)
-            return housedProperties;
-        for (int i = 0; i < housedProperties.size() - 1; i++)  //I think this was called a bubble sort idfk
-        {
-            for (int j = 0; j < housedProperties.size() - 1 - i; j++) 
-            {
-                if (housedProperties.get(j).houseCost > housedProperties.get(j + 1).houseCost) 
-                {
-                    Property temp = housedProperties.get(j);
-                    housedProperties.set(j, housedProperties.get(j + 1));
-                    housedProperties.set(j + 1, temp);
-                }
-            }
-        }
-        return housedProperties; 
-    }
-    public void sellHouse()
-    {
-        ArrayList<Property> propertiesToSell = sortCheapest();
-        Property byeBye = propertiesToSell.get(0);
-        
-        int indexOfSellHouse = 0;
-        for (int i = 0; i < spaces.size(); i++) {
-            if(spaces.get(i) instanceof Property)
-            {
-                Property property = (Property) spaces.get(i);
-                if(property.name.equals(byeBye.name))    
-                {
-                    indexOfSellHouse = i; 
-                    break;
-                }
-            }
-        }
-        Property property = (Property) spaces.get(indexOfSellHouse);
-        System.out.println("Player before house sell balance: " + money);
-        property.houses--;
-        money += property.houseCost;
-        System.out.println(name + " sold a house on " + property.name + " for " + " $" + property.houseCost);
-        System.out.println(name + "'s balance is now " + money);
-    }
     //Checks if player owns specificed color group for house building
     public boolean ownsColorGroup(String colorGroup) {
         int hasColor = 0;
@@ -324,33 +226,22 @@ public class Player {
             if(spaces.get(i) instanceof Property)
             {
                 Property property = (Property) spaces.get(i);
-                System.out.println("Debug color current property " + property.color);
-                if(property.color.toLowerCase().equals(colorGroup.toLowerCase()))
+//                System.out.println("Debug color current property " + property.color);
+                if(property.color.equals(colorGroup))
                 {
                     hasColor++;    
-                    System.out.println("Debug: property equals " + property.color + colorGroup);
-                    System.out.println("HasColor count " + hasColor);
+//                    System.out.println("Debug: property equals " + property.color + colorGroup);
+//                    System.out.println("HasColor count " + hasColor);
 
                 }    
             }        
         }
-
         if((colorGroup.equals("Purple") || colorGroup.equals("Blue")) && hasColor == 2)
-        {
-            System.out.println("group owned " + colorGroup);
             return true;
-        }    
         else if(hasColor == 3)
-        {
-            System.out.println("group owned " + colorGroup);
             return true;
-        }    
         else
-        {
-            System.out.println("Group not owned " + hasColor + "<--num " + colorGroup);
-
             return false;        
-        }    
     }
 
     public void offerTrades() {
@@ -371,19 +262,18 @@ public class Player {
         System.out.println("DEBUG: FLAG AFTER SET");
 
         for (Player p : Main.players) {
+            //System.out.println("pppppppppppppppppppppppppppppppp");
             for (int i = 0; i < p.spaces.size(); i++) {
                 Space s = p.spaces.get(i);
                 if (s instanceof Property) {
                     Property property = (Property) s;
                     if (wantedProperties.contains(property.color)) {
+                        System.out.println("DEBUG: FLAG OFFER TRADE");
                         //Make a tradeOffer
                         Space toGiveSpace = findClosestValueSpace(property.price, property.color);
                         if (toGiveSpace != null) {
-                            ArrayList<Space> player1Spaces = new ArrayList<>();
-                            player1Spaces.add(toGiveSpace);
-                            ArrayList<Space> player2Spaces = new ArrayList<>();
-                            player2Spaces.add(s);
-                            TradeOffer tradeOffer = new TradeOffer(player1Spaces, 0, player2Spaces, 0, this, p);
+                            System.out.println("DEBUG: FLAG MAKE TRADE OFFER");
+                            TradeOffer tradeOffer = new TradeOffer(toGiveSpace, s, this, p);
                             p.considerIncomingTradeOffer(tradeOffer);
                             break;
                         }
@@ -395,12 +285,9 @@ public class Player {
                         //Make a tradeOffer
                         Space toGiveSpace = findClosestValueSpace(railroad.price, "Railroad");
                         if (toGiveSpace != null) {
-                            ArrayList<Space> player1Spaces = new ArrayList<>();
-                            player1Spaces.add(toGiveSpace);
-                            ArrayList<Space> player2Spaces = new ArrayList<>();
-                            player2Spaces.add(s);
-                            TradeOffer tradeOffer = new TradeOffer(player1Spaces, 0, player2Spaces, 0, this, p);
+                            TradeOffer tradeOffer = new TradeOffer(toGiveSpace, s, this, p);
                             p.considerIncomingTradeOffer(tradeOffer);
+                            break;
                         }
                     }
                 }
@@ -410,12 +297,9 @@ public class Player {
                         //Make a tradeOffer
                         Space toGiveSpace = findClosestValueSpace(utility.price, "Utility");
                         if (toGiveSpace != null) {
-                            ArrayList<Space> player1Spaces = new ArrayList<>();
-                            player1Spaces.add(toGiveSpace);
-                            ArrayList<Space> player2Spaces = new ArrayList<>();
-                            player2Spaces.add(s);
-                            TradeOffer tradeOffer = new TradeOffer(player1Spaces, 0, player2Spaces, 0, this, p);
+                            TradeOffer tradeOffer = new TradeOffer(toGiveSpace, s, this, p);
                             p.considerIncomingTradeOffer(tradeOffer);
+                            break;
                         }
                     }
                 }
@@ -426,11 +310,15 @@ public class Player {
 
     public Space findClosestValueSpace(int targetValue, String dontTradeTag) {
         int distanceFromTarget = 99999;
+        //System.out.println(dontTradeTag);
         Space toGive = null;
         for (Space s : spaces) {
+            //System.out.println("00000000000000000000000000");
             if (s instanceof Property) {
                 Property property = (Property) s;
+                //System.out.println("111111111111111111111111111111111111111");
                 if (!property.color.equals(dontTradeTag)) {
+                    //System.out.println("222222222222222222222222222222222222");
                     if (Math.abs(property.price - targetValue) <= distanceFromTarget) {
                         distanceFromTarget = Math.abs(property.price - targetValue);
                         toGive = s;
@@ -469,5 +357,3 @@ public class Player {
         return name;
     }
 }
-
-
