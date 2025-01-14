@@ -13,13 +13,16 @@ public class Player {
     public double propertyManagement;
     public double riskAppetite;
     public double tradingStrategy;
+    public int biddingIncrement = 20;
+    public double auctionStrategy;
 
-    public Player(String name, double houseManagement, double propertyManagement, double riskAppetite, double tradingStrategy) {
+    public Player(String name, double houseManagement, double propertyManagement, double riskAppetite, double tradingStrategy, double auctionStrategy) {
         this.name = name;
         this.houseManagement = houseManagement;
         this.propertyManagement = propertyManagement;
         this.riskAppetite = riskAppetite;
         this.tradingStrategy = tradingStrategy;
+        this.auctionStrategy = auctionStrategy;
     }
 
     public void addSpace(Space space){
@@ -150,6 +153,67 @@ public class Player {
    }
 
     public int bid(int currentBid, Space space) {
+        // auctionStrategy ∈ [0,1) : where every .1 represents max bid will be up to (price * auctionStrategy/0.1)
+        // auctionStrategy = 1 : means always overbid when possible
+        if (auctionStrategy < 1) {
+            if (space instanceof Property) {
+                Property property = (Property) space;
+                int maxBid = (int) (property.price * auctionStrategy / 0.1);
+                if (currentBid < maxBid) {
+                    if (currentBid + biddingIncrement <= money) {
+                        //Bid only when have enough money
+                        return currentBid + biddingIncrement;
+                    } else {
+                        //No money to bid more
+                        return 0;
+                    }
+                } else {
+                    //Not willing to bid more
+                    return 0;
+                }
+            }
+            if (space instanceof Railroad) {
+                Railroad railroad = (Railroad) space;
+                int maxBid = (int) (railroad.price * auctionStrategy / 0.1);
+                if (currentBid < maxBid) {
+                    if (currentBid + biddingIncrement <= money) {
+                        //Bid only when have enough money
+                        return currentBid + biddingIncrement;
+                    } else {
+                        //No money to bid more
+                        return 0;
+                    }
+                } else {
+                    //Not willing to bid more
+                    return 0;
+                }
+            }
+            if (space instanceof Utility) {
+                Utility utility = (Utility) space;
+                int maxBid = (int) (utility.price * auctionStrategy / 0.1);
+                if (currentBid < maxBid) {
+                    if (currentBid + biddingIncrement <= money) {
+                        //Bid only when have enough money
+                        return currentBid + biddingIncrement;
+                    } else {
+                        //No money to bid more
+                        return 0;
+                    }
+                } else {
+                    //Not willing to bid more
+                    return 0;
+                }
+            }
+        } else {
+            // auctionStrategy is 1
+            if (currentBid + biddingIncrement <= money) {
+                //Bid only when have enough money
+                return currentBid + biddingIncrement;
+            } else {
+                //No money to bid more
+                return 0;
+            }
+        }
         return 0;
     }
 
@@ -370,6 +434,10 @@ public class Player {
         if (Math.random() < tradingStrategy) {
             tradeOffer.trade();
         }
+    }
+
+    public String toString() {
+        return name;
     }
 }
 
