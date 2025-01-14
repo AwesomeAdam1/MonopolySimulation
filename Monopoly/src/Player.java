@@ -26,13 +26,26 @@ public class Player {
     public int payAmount(int amount) {
         //===== Handle Getting More Money Action Later =====/
 
-
         if (amount > money) {
-            money -= amount;
-            return money;
-        } else {
+            if(totalNumberOfHouses() > 0)
+            {
+                sortCheapest();
+                while(money <= 0 && totalNumberOfHouses() > 0 )
+                {
+                    sellHouse();
+                }
+                if(money > 0)
+                    return money;
+                else
+                    System.out.println(name + " is still broke after selling all houses. BANKRUPT!");
+            }          }
+
+        if (money >= amount) {
             money -= amount;
             return amount;
+        } else {
+            money -= amount;
+            return money;
         }
     }
 
