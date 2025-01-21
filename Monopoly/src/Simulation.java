@@ -24,7 +24,7 @@ public class Simulation {
 
     public static void main(String[] args) {
         double[][] playerWeights = new double[playerCount][5];
-//
+////
         int count = 0;
         for(int i = 0; i < divisionPerAttribute; i++) {
             for (int j = 0; j < divisionPerAttribute; j++) {
