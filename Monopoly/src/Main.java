@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class Main {
     public Space[] board = {
@@ -43,16 +45,23 @@ public class Main {
             new Tax("Luxury Tax", false),
             new Property("Boardwalk", "Blue", 400, 200, new int[]{50, 200, 600, 1400, 1700, 2000}, 200),
     };
-    public static ArrayList<Player> players = new ArrayList<>();
+    public static ArrayList<Player> players;
+    public String[] printTable;
 
     public Main(ArrayList<Player> newPlayers) {
         int maxIterations = 1000;
         int playerIndex = 0;
         int iterations = 1;
         players = newPlayers;
+        printTable = new String[4];
+        for (int i = 0; i < 4; i++) {
+            printTable[i] = players.get(i).name;
+        }
+        int[] movesPerPlayer = new int[20];
         while (iterations <= maxIterations && players.size() >= 2) {
             Player currentPlayer = players.get(playerIndex);
             //System.out.printf("========== Iteration %d - %s =========\n", iterations, currentPlayer.name);
+            //System.out.println("Current Money: " + currentPlayer.money);
             //System.out.printf("On %s\n", board[currentPlayer.positionIndex].toString());
 
             int doublesCount = 0;
@@ -89,8 +98,17 @@ public class Main {
 
                     if (currentPlayer.money >= 0) {
                         currentPlayer.positionIndex = (currentPlayer.positionIndex + roll1 + roll2) % 40;
-                        //System.out.printf("Landed on %s\n", board[currentPlayer.positionIndex].toString());
-
+                        if(board[currentPlayer.positionIndex] instanceof Property)
+                        {
+                            Property temp = (Property) board[currentPlayer.positionIndex];
+                            //System.out.printf("Landed on %s\n", board[currentPlayer.positionIndex].toString() + " which has " +
+                            //        temp.houses + " houses which costs $" + temp.rent[temp.houses] + " owned by player: " +
+                            //        (temp.owner == null ? "no-one" : temp.owner.name) + " with $" + (temp.owner == null ? "0" : temp.owner.money));
+                        }
+                        else
+                        {
+                            //System.out.printf("Landed on %s\n", board[currentPlayer.positionIndex].toString());
+                        }
                         //Do action on space
                         if (board[currentPlayer.positionIndex] instanceof Utility) {
                             ((Utility) board[currentPlayer.positionIndex]).doAction(currentPlayer, roll1 * 2);
@@ -121,7 +139,17 @@ public class Main {
                     roll2 = Dice.roll();
                     currentPlayer.positionIndex = ((currentPlayer.positionIndex + roll1 + roll2) % 40);
                     //System.out.printf("Rolled a %d and a %d\n", roll1, roll2);
-                    //System.out.printf("Landed on %s\n", board[currentPlayer.positionIndex].toString());
+                    if(board[currentPlayer.positionIndex] instanceof Property)
+                    {
+                        Property temp = (Property) board[currentPlayer.positionIndex];
+                        //System.out.printf("Landed on %s\n", board[currentPlayer.positionIndex].toString() + " which has " +
+                        //        temp.houses + " houses which costs $" + temp.rent[temp.houses] + " owned by player: " +
+                        //        (temp.owner == null ? "no-one" : temp.owner.name) + " with $" + (temp.owner == null ? "0" : temp.owner.money));
+                    }
+                    else
+                    {
+                        //System.out.printf("Landed on %s\n", board[currentPlayer.positionIndex].toString());
+                    }
 
                     //Passed Go
                     if (currentPlayer.positionIndex - roll1 - roll2 <= 0) {
@@ -154,22 +182,106 @@ public class Main {
                 }
             }
 
-            currentPlayer.buildHouses();
-            currentPlayer.offerTrades();
+            int buildHouseIteration = 0;
+            for(Space space : currentPlayer.spaces)
+            {
+                if(space instanceof Property)
+                    buildHouseIteration++;
+            }
+
+            if (currentPlayer.money >= 0) {
+                currentPlayer.buildHouses(buildHouseIteration);
+                currentPlayer.offerTrades();
+            }
+
             //System.out.println("DEBUG: NEXT PLAYER");
             //System.out.println("Current player money: " + currentPlayer.money + "");
             //Checks bankruptcy
 
             if (currentPlayer.money <= 0) {
-                //System.out.println("BANKRUPT! Player is removed.");
+                //System.out.println("BANKRUPT! "+ currentPlayer.name + " is removed.");
+                Simulation.scores[Integer.parseInt(currentPlayer.name.substring(6))] += 4 - players.size();
+                // Space space = board[currentPlayer.positionIndex];
+                // Player propOwner = null;
+                // if (space instanceof Property) {
+                //     Property property = (Property) space;
+                //     propOwner = property.owner;
+                // }
+                // if (space instanceof Railroad) {
+                //     Railroad railroad = (Railroad) space;
+                //     propOwner = railroad.owner;
+                // }
+                // if (space instanceof Utility) {
+                //     Utility utility = (Utility) space;
+                //     propOwner = utility.owner;
+                // }
+                // if(space instanceof Tax)
+                // {
+                //     players.remove(playerIndex);
+                //     playerIndex--;
+                //     break;
+                // }
+
+                // System.out.println("The player was bankrupted by " + propOwner.toString());
+                // for (int i = 0; i < currentPlayer.spaces.size(); i++) {
+                //     propOwner.addSpace(currentPlayer.spaces.get(i));
+                //     System.out.println(currentPlayer.spaces.get(i).toString() + " has been transferred to " + propOwner.name +
+                //     " from " + currentPlayer.toString());
+                // }
                 players.remove(playerIndex);
                 playerIndex--;
             }
 
-            //System.out.println("");
-            printIteration(iterations);
+            int playerArrayIndex = Integer.parseInt(currentPlayer.name.substring(6));
+            movesPerPlayer[playerArrayIndex]++;
+            if (movesPerPlayer[playerArrayIndex] <= 50) {
+                int totalMoves = Simulation.totalMoves50[Integer.parseInt(currentPlayer.name.substring(6))];
+                Simulation.avgNetworth50[Integer.parseInt(currentPlayer.name.substring(6))]
+                        = (currentPlayer.getNetWorth() + totalMoves * Simulation.avgNetworth50[Integer.parseInt(currentPlayer.name.substring(6))])/(totalMoves + 1);
+                Simulation.totalMoves50[Integer.parseInt(currentPlayer.name.substring(6))]++;
+            } else if (movesPerPlayer[playerArrayIndex] <= 100) {
+                int totalMoves = Simulation.totalMoves100[Integer.parseInt(currentPlayer.name.substring(6))];
+                Simulation.avgNetworth100[Integer.parseInt(currentPlayer.name.substring(6))]
+                        = (currentPlayer.getNetWorth() + totalMoves * Simulation.avgNetworth100[Integer.parseInt(currentPlayer.name.substring(6))])/(totalMoves + 1);
+                Simulation.totalMoves100[Integer.parseInt(currentPlayer.name.substring(6))]++;
+            } else if (movesPerPlayer[playerArrayIndex] <= 150) {
+                int totalMoves = Simulation.totalMoves150[Integer.parseInt(currentPlayer.name.substring(6))];
+                Simulation.avgNetworth150[Integer.parseInt(currentPlayer.name.substring(6))]
+                        = (currentPlayer.getNetWorth() + totalMoves * Simulation.avgNetworth150[Integer.parseInt(currentPlayer.name.substring(6))])/(totalMoves + 1);
+                Simulation.totalMoves150[Integer.parseInt(currentPlayer.name.substring(6))]++;
+            } else if (movesPerPlayer[playerArrayIndex] <= 200) {
+                int totalMoves = Simulation.totalMoves200[Integer.parseInt(currentPlayer.name.substring(6))];
+                Simulation.avgNetworth200[Integer.parseInt(currentPlayer.name.substring(6))]
+                        = (currentPlayer.getNetWorth() + totalMoves * Simulation.avgNetworth200[Integer.parseInt(currentPlayer.name.substring(6))])/(totalMoves + 1);
+                Simulation.totalMoves200[Integer.parseInt(currentPlayer.name.substring(6))]++;
+            } else if (movesPerPlayer[playerArrayIndex] <= 250) {
+                int totalMoves = Simulation.totalMoves250[Integer.parseInt(currentPlayer.name.substring(6))];
+                Simulation.avgNetworth250[Integer.parseInt(currentPlayer.name.substring(6))]
+                        = (currentPlayer.getNetWorth() + totalMoves * Simulation.avgNetworth250[Integer.parseInt(currentPlayer.name.substring(6))])/(totalMoves + 1);
+                Simulation.totalMoves250[Integer.parseInt(currentPlayer.name.substring(6))]++;
+            } else {
+                int totalMoves = Simulation.totalMoves250more[Integer.parseInt(currentPlayer.name.substring(6))];
+                Simulation.avgNetworth250more[Integer.parseInt(currentPlayer.name.substring(6))]
+                        = (currentPlayer.getNetWorth() + totalMoves * Simulation.avgNetworth250more[Integer.parseInt(currentPlayer.name.substring(6))])/(totalMoves + 1);
+                Simulation.totalMoves250more[Integer.parseInt(currentPlayer.name.substring(6))]++;
+            }
+
             iterations++;
             playerIndex = (playerIndex + 1) % players.size();
+        }
+
+        if (players.size() == 1){
+            Simulation.scores[Integer.parseInt(players.get(0).name.substring(6))] += 3;
+        } else {
+            Collections.sort(players,
+                    new Comparator<>() {
+                        public int compare(Player a, Player b) {
+                            return b.money - a.money;
+                        }
+                    });
+            for (int i = 0; i < players.size(); i++) {
+                Simulation.scores[Integer.parseInt(players.get(i).name.substring(6))] += 3 - i;
+            }
         }
 
         //System.out.println("========== GAME END " + iterations + "=========");
@@ -186,11 +298,27 @@ public class Main {
 
     }
 
-    public void printIteration(int iteration) {
+    public void printIteration(int iteration, boolean dontuse) {
         StringBuffer str = new StringBuffer();
         str.append("G:" + Simulation.game + ",I:" + iteration + ",");
         for (int i = 0; i < players.size(); i++) {
             str.append("P" + players.get(i).name.substring(6) + ":" + players.get(i).getNetWorth() + ",");
+        }
+        Simulation.filePrint.println(str);
+    }
+
+    public void printIteration(int iteration) {
+        StringBuffer str = new StringBuffer();
+        str.append(iteration + ",");
+        int tableIndex = 0;
+
+        for (int i = 0; i < printTable.length; i++) {
+            if (tableIndex < players.size() && printTable[i].equals(players.get(tableIndex).name)) {
+                str.append(players.get(tableIndex).getNetWorth() + ",");
+                tableIndex++;
+            } else {
+                str.append("0,");
+            }
         }
         Simulation.filePrint.println(str);
     }

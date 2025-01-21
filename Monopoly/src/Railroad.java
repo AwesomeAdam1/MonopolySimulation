@@ -28,9 +28,9 @@ public class Railroad extends Space {
             }
             int payAmount = player.payAmount((int)(25 * Math.pow(2, railroadCount - 1)));
             owner.money += payAmount;
-            //System.out.printf("%s has been paid $%d by %s\n", owner.name, payAmount, player.name);
-            //System.out.printf("%s now has $%d\n", owner.name, owner.money);
-            //System.out.printf("%s now has $%d\n", player.name, player.money);
+//            System.out.printf("%s has been paid $%d by %s\n", owner.name, payAmount, player.name);
+//            System.out.printf("%s now has $%d\n", owner.name, owner.money);
+//            System.out.printf("%s now has $%d\n", player.name, player.money);
             if (player.money < 0) {
                 player.setOwnersOfSpaces(owner);
             }

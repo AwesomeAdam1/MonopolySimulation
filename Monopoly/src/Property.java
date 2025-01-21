@@ -31,9 +31,9 @@ public class Property extends Space {
             //Pay player
             int payAmount = player.payAmount(rent[houses]);
             owner.money += payAmount;
-            //System.out.printf("%s has been paid $%d by %s\n", owner.name, payAmount, player.name);
-            //System.out.printf("%s now has $%d\n", owner.name, owner.money);
-            //System.out.printf("%s now has $%d\n", player.name, player.money);
+//            System.out.printf("%s has been paid $%d by %s\n", owner.name, payAmount, player.name);
+//            System.out.printf("%s now has $%d\n", owner.name, owner.money);
+//            System.out.printf("%s now has $%d\n", player.name, player.money);
             if (player.money < 0) {
                 player.setOwnersOfSpaces(owner);
             }

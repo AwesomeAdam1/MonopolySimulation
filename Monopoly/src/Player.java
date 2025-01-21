@@ -1,5 +1,3 @@
-import jdk.jshell.execution.Util;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -28,23 +26,8 @@ public class Player {
         this.auctionStrategy = auctionStrategy;
     }
 
-    public int getNetWorth() {
-        int sum = money;
-        for(Space s : spaces) {
-            if (s instanceof Property) {
-                Property p = (Property) s;
-                sum += p.price + p.houses * p.houseCost;
-            }
-            if (s instanceof Railroad) {
-                Railroad r = (Railroad) s;
-                sum += r.price;
-            }
-            if (s instanceof Utility) {
-                Utility u = (Utility) s;
-                sum += u.price;
-            }
-        }
-        return sum;
+    public double[] getIdeals() {
+        return new double[]{houseManagement, propertyManagement, riskAppetite, tradingStrategy, auctionStrategy};
     }
 
     public void addSpace(Space space){
@@ -90,6 +73,7 @@ public class Player {
                 owner.addSpace(space);
             }
         }
+        //System.out.println("TRANSFERING OWNERSHIP TO :" + (owner == null ? "no one" : owner.name));
     }
 
     public int payAmount(int amount) {
@@ -112,19 +96,19 @@ public class Player {
                 {
                     //System.out.println(name + " is still broke after selling all houses. BANKRUPT!");
                     return preMoney;
-                }    
-            }          
-          }
-
-        else{
+                }
+            } else {
+                money = -1;
+                return money;
+            }
+        } else {
             money -= amount;
             return amount;
-        } 
+        }
         // else {
         //     money -= amount;
         //     return money;
-        // }
-        return amount;
+        //
     }
 
     public boolean offerToBuySpace(Space space) {
@@ -155,9 +139,9 @@ public class Player {
         for (int i = 0; i < spaces.size(); i++) {
             if (spaces.get(i) instanceof Property) {
                 Property property = (Property) spaces.get(i);
-                if(property.owner.name.equals(name) && ownsColorGroup(property.color) && property.houses < 4 && money > property.houseCost)
+                if(property.owner != null && property.owner.name.equals(name) && ownsColorGroup(property.color) && property.houses < 4 && money > property.houseCost)
                     buildableProperties.add(property);
-             }
+            }
         }
         return buildableProperties;
     }
@@ -170,7 +154,7 @@ public class Player {
                 if (this.houseManagement < 0.5)
                     if (properties.get(j).houseCost < properties.get(minMaxIndex).houseCost)
                         minMaxIndex = j;
-                else 
+                    else
                     if (properties.get(j).houseCost > properties.get(minMaxIndex).houseCost)
                         minMaxIndex = j;
             }
@@ -178,119 +162,123 @@ public class Player {
             properties.set(minMaxIndex, properties.get(i));
             properties.set(i, temp);
         }
-    }    
-public void buildHouses() {
-    // Attempt to build houses based on houseManagement probability.
-    if (Math.random() < houseManagement) {
-        ArrayList<Space> spaces = this.spaces;
-        ArrayList<Property> buildableProperties = getBuildableProperties(spaces);
-        HashMap<String, ArrayList<Property>> propertiesByColor = new HashMap<>();
+    }
+    public void buildHouses(int iterationCount) {
+        // Attempt to build houses based on houseManagement probability.
+        for (int i = 0; i < iterationCount; i++)
+        {
+            if (Math.random() < houseManagement) {
+                //System.out.println("check passed");
+                ArrayList<Space> spaces = this.spaces;
+                ArrayList<Property> buildableProperties = getBuildableProperties(spaces);
+                HashMap<String, ArrayList<Property>> propertiesByColor = new HashMap<>();
 
-        // Group buildable properties by color.
-        for (Property property : buildableProperties) {
-            propertiesByColor
-                .computeIfAbsent(property.color, k -> new ArrayList<>())
-                .add(property);
-        }
+                // Group buildable properties by color.
+                for (Property property : buildableProperties) {
+                    propertiesByColor
+                            .computeIfAbsent(property.color, k -> new ArrayList<>())
+                            .add(property);
+                }
 
-        // If no properties are available to build houses, exit early.
-        if (buildableProperties.isEmpty()) {
-            return;
-        }
+                // If no properties are available to build houses, exit early.
+                if (buildableProperties.isEmpty()) {
+                    return;
+                }
 
-        // Iterate over house levels (1 to 4).
-        for (int houseLevel = 1; houseLevel <= 4; houseLevel++) {
-            // Iterate through each color group of properties.
-            for (ArrayList<Property> group : propertiesByColor.values()) {
-                // Sort properties within the group by house cost.
-                sortPropertiesByHouseCost(group);
+                // Iterate over house levels (1 to 4).
+                for (int houseLevel = 1; houseLevel <= 4; houseLevel++) {
+                    // Iterate through each color group of properties.
+                    for (ArrayList<Property> group : propertiesByColor.values()) {
+                        // Sort properties within the group by house cost.
+                        sortPropertiesByHouseCost(group);
 
-                // Try to build a house on each property in the group.
-                for (Property property : group) {
-                    if (property.houses == houseLevel - 1 && money >= property.houseCost) {
-                        property.houses += 1;
-                        money -= property.houseCost;
+                        // Try to build a house on each property in the group.
+                        for (Property property : group) {
+                            if (property.houses == houseLevel - 1 && money >= property.houseCost) {
+                                property.houses += 1;
+                                money -= property.houseCost;
 
-//                        System.out.printf("%s bought a house on %s for $%d! This makes its rent now: $%d instead of $%d.%n",
-//                            name, property.name, property.houseCost,
-//                            property.rent[property.houses],
-//                            property.rent[property.houses - 1]
-//                        );
+//                                System.out.printf("%s bought a house on %s for $%d! This makes its rent now: $%d instead of $%d.%n",
+//                                        name, property.name, property.houseCost,
+//                                        property.rent[property.houses],
+//                                        property.rent[property.houses - 1]
+//                                );
 
-                        // Return after building one house to simulate one action per turn.
-                        return;
+                                // Return after building one house to simulate one action per turn.
+                                return;
+                            }
+                        }
                     }
                 }
             }
         }
     }
-}
 
-public int totalNumberOfHouses()
-{
-    int rtn = 0;
-    for (int i = 0; i < spaces.size(); i++) 
+    public int totalNumberOfHouses()
     {
-        if(spaces.get(i) instanceof Property)
+        int rtn = 0;
+        for (int i = 0; i < spaces.size(); i++)
         {
-            Property property = (Property) spaces.get(i);
-            rtn += property.houses;
+            if(spaces.get(i) instanceof Property)
+            {
+                Property property = (Property) spaces.get(i);
+                rtn += property.houses;
+            }
         }
+        return rtn;
     }
-    return rtn;
-}
-public ArrayList<Property> sortCheapest() // ONLY CALL AFTER CHECKING totalNumberOfHouses() FOR PLAYER > 0
-{
-    ArrayList<Property> housedProperties = new ArrayList<>();
-    for (int i = 0; i < spaces.size(); i++) 
+    public ArrayList<Property> sortCheapest() // ONLY CALL AFTER CHECKING totalNumberOfHouses() FOR PLAYER > 0
     {
-        if(spaces.get(i) instanceof Property)
+        ArrayList<Property> housedProperties = new ArrayList<>();
+        for (int i = 0; i < spaces.size(); i++)
         {
-            Property property = (Property) spaces.get(i);
-            if(property.houses > 0)
-                housedProperties.add(property);
+            if(spaces.get(i) instanceof Property)
+            {
+                Property property = (Property) spaces.get(i);
+                if(property.houses > 0)
+                    housedProperties.add(property);
+            }
         }
-    }
-    if(housedProperties.size() == 1)
+        if(housedProperties.size() == 1)
+            return housedProperties;
+        for (int i = 0; i < housedProperties.size() - 1; i++)  //I think this was called a bubble sort idfk
+        {
+            for (int j = 0; j < housedProperties.size() - 1 - i; j++)
+            {
+                if (housedProperties.get(j).houseCost > housedProperties.get(j + 1).houseCost)
+                {
+                    Property temp = housedProperties.get(j);
+                    housedProperties.set(j, housedProperties.get(j + 1));
+                    housedProperties.set(j + 1, temp);
+                }
+            }
+        }
         return housedProperties;
-    for (int i = 0; i < housedProperties.size() - 1; i++)  //I think this was called a bubble sort idfk
+    }
+    public void sellHouse()
     {
-        for (int j = 0; j < housedProperties.size() - 1 - i; j++) 
-        {
-            if (housedProperties.get(j).houseCost > housedProperties.get(j + 1).houseCost) 
+        ArrayList<Property> propertiesToSell = sortCheapest();
+        Property byeBye = propertiesToSell.get(0);
+
+        int indexOfSellHouse = 0;
+        for (int i = 0; i < spaces.size(); i++) {
+            if(spaces.get(i) instanceof Property)
             {
-                Property temp = housedProperties.get(j);
-                housedProperties.set(j, housedProperties.get(j + 1));
-                housedProperties.set(j + 1, temp);
+                Property property = (Property) spaces.get(i);
+                if(property.name.equals(byeBye.name))
+                {
+                    indexOfSellHouse = i;
+                    break;
+                }
             }
         }
+        Property property = (Property) spaces.get(indexOfSellHouse);
+        //System.out.println("Player before house sell balance: " + money);
+        property.houses--;
+        money += (int)(property.houseCost * 0.5);
+        //System.out.println(name + " sold a house on " + property.name + " for " + " $" + (property.houseCost * 0.5));
+        //System.out.println(name + "'s balance is now " + money);
     }
-    return housedProperties; 
-}
-public void sellHouse()
-{
-    ArrayList<Property> propertiesToSell = sortCheapest();
-    Property byeBye = propertiesToSell.get(0);
-    
-    int indexOfSellHouse = 0;
-    for (int i = 0; i < spaces.size(); i++) {
-        if(spaces.get(i) instanceof Property)
-        {
-            Property property = (Property) spaces.get(i);
-            if(property.name.equals(byeBye.name))    
-            {
-                indexOfSellHouse = i; 
-                break;
-            }
-        }
-    }
-    Property property = (Property) spaces.get(indexOfSellHouse);
-    //System.out.println("Player before house sell balance: " + money);
-    property.houses--;
-    money += property.houseCost;
-    //System.out.println(name + " sold a house on " + property.name + " for " + " $" + property.houseCost);
-    //System.out.println(name + "'s balance is now " + money);
-}
     public int bid(int currentBid, Space space) {
         // auctionStrategy ∈ [0,1) : where every .1 represents max bid will be up to (price * auctionStrategy/0.1)
         // auctionStrategy = 1 : means always overbid when possible
@@ -382,19 +370,25 @@ public void sellHouse()
 //                System.out.println("Debug color current property " + property.color);
                 if(property.color.equals(colorGroup))
                 {
-                    hasColor++;    
+                    hasColor++;
 //                    System.out.println("Debug: property equals " + property.color + colorGroup);
 //                    System.out.println("HasColor count " + hasColor);
 
-                }    
-            }        
+                }
+            }
         }
         if((colorGroup.equals("Purple") || colorGroup.equals("Blue")) && hasColor == 2)
+        {
+            //System.out.println("Group Owned");
             return true;
+        }
         else if(hasColor == 3)
+        {
+            //System.out.println("group owned");
             return true;
+        }
         else
-            return false;        
+            return false;
     }
 
     public void offerTrades() {
@@ -506,6 +500,25 @@ public void sellHouse()
         }
     }
 
+    public int getNetWorth() {
+        int sum = money;
+        for(Space s : spaces) {
+            if (s instanceof Property) {
+                Property p = (Property) s;
+                sum += p.price + p.houses * p.houseCost;
+                sum += p.houses * p.houseCost;
+            }
+            if (s instanceof Railroad) {
+                Railroad r = (Railroad) s;
+                sum += r.price;
+            }
+            if (s instanceof Utility) {
+                Utility u = (Utility) s;
+                sum += u.price;
+            }
+        }
+        return sum;
+    }
 
     public String toString() {
         return name;
