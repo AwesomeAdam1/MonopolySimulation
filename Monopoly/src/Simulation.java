@@ -237,7 +237,7 @@ public class Simulation {
 //        //System.out.println(Arrays.toString(currentIdeal));
 //
 //
-//
+////
         for (int t = 1; t <= 100; t++) {
             System.out.println(t);
             for (int i = 0; i < playerWeights.length; i++) {
