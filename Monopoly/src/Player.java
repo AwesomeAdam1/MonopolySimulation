@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -420,9 +419,54 @@ public class Player {
                         Space toGiveSpace = findClosestValueSpace(property.price, property.color);
                         if (toGiveSpace != null) {
                             //System.out.println("DEBUG: FLAG MAKE TRADE OFFER");
-                            TradeOffer tradeOffer = new TradeOffer(toGiveSpace, s, this, p);
-                            p.considerIncomingTradeOffer(tradeOffer);
-                            break;
+                            if (toGiveSpace instanceof Property) {
+                                Property toGiveProperty = (Property) toGiveSpace;
+                                if (toGiveProperty.price > property.price) {
+                                    if (Math.random() < tradingStrategy - 0.05) {
+                                        TradeOffer tradeOffer = new TradeOffer(toGiveSpace, s, this, p);
+                                        p.considerIncomingTradeOffer(tradeOffer);
+                                        break;
+                                    }
+                                } else {
+                                    if (Math.random() < tradingStrategy + 0.05) {
+                                        TradeOffer tradeOffer = new TradeOffer(toGiveSpace, s, this, p);
+                                        p.considerIncomingTradeOffer(tradeOffer);
+                                        break;
+                                    }
+                                }
+                            }
+                            if (toGiveSpace instanceof Railroad) {
+                                Railroad toGiveRailroad = (Railroad) toGiveSpace;
+                                if (toGiveRailroad.price > property.price) {
+                                    if (Math.random() < tradingStrategy - 0.05) {
+                                        TradeOffer tradeOffer = new TradeOffer(toGiveSpace, s, this, p);
+                                        p.considerIncomingTradeOffer(tradeOffer);
+                                        break;
+                                    } else {
+                                        if (Math.random() < tradingStrategy + 0.05) {
+                                            TradeOffer tradeOffer = new TradeOffer(toGiveSpace, s, this, p);
+                                            p.considerIncomingTradeOffer(tradeOffer);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                            if (toGiveSpace instanceof Utility) {
+                                Utility toGiveUtility = (Utility) toGiveSpace;
+                                if (toGiveUtility.price > property.price) {
+                                    if (Math.random() < tradingStrategy - 0.05) {
+                                        TradeOffer tradeOffer = new TradeOffer(toGiveSpace, s, this, p);
+                                        p.considerIncomingTradeOffer(tradeOffer);
+                                        break;
+                                    } else {
+                                        if (Math.random() < tradingStrategy + 0.05) {
+                                            TradeOffer tradeOffer = new TradeOffer(toGiveSpace, s, this, p);
+                                            p.considerIncomingTradeOffer(tradeOffer);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -432,9 +476,54 @@ public class Player {
                         //Make a tradeOffer
                         Space toGiveSpace = findClosestValueSpace(railroad.price, "Railroad");
                         if (toGiveSpace != null) {
-                            TradeOffer tradeOffer = new TradeOffer(toGiveSpace, s, this, p);
-                            p.considerIncomingTradeOffer(tradeOffer);
-                            break;
+                            if (toGiveSpace instanceof Property) {
+                                Property toGiveProperty = (Property) toGiveSpace;
+                                if (toGiveProperty.price > railroad.price) {
+                                    if (Math.random() < tradingStrategy - 0.05) {
+                                        TradeOffer tradeOffer = new TradeOffer(toGiveSpace, s, this, p);
+                                        p.considerIncomingTradeOffer(tradeOffer);
+                                        break;
+                                    } else {
+                                        if (Math.random() < tradingStrategy + 0.05) {
+                                            TradeOffer tradeOffer = new TradeOffer(toGiveSpace, s, this, p);
+                                            p.considerIncomingTradeOffer(tradeOffer);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                            if (toGiveSpace instanceof Railroad) {
+                                Railroad toGiveRailroad = (Railroad) toGiveSpace;
+                                if (toGiveRailroad.price > railroad.price) {
+                                    if (Math.random() < tradingStrategy - 0.05) {
+                                        TradeOffer tradeOffer = new TradeOffer(toGiveSpace, s, this, p);
+                                        p.considerIncomingTradeOffer(tradeOffer);
+                                        break;
+                                    } else {
+                                        if (Math.random() < tradingStrategy + 0.05) {
+                                            TradeOffer tradeOffer = new TradeOffer(toGiveSpace, s, this, p);
+                                            p.considerIncomingTradeOffer(tradeOffer);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                            if (toGiveSpace instanceof Utility) {
+                                Utility toGiveUtility = (Utility) toGiveSpace;
+                                if (toGiveUtility.price > railroad.price) {
+                                    if (Math.random() < tradingStrategy - 0.05) {
+                                        TradeOffer tradeOffer = new TradeOffer(toGiveSpace, s, this, p);
+                                        p.considerIncomingTradeOffer(tradeOffer);
+                                        break;
+                                    }
+                                } else {
+                                    if (Math.random() < tradingStrategy + 0.05) {
+                                        TradeOffer tradeOffer = new TradeOffer(toGiveSpace, s, this, p);
+                                        p.considerIncomingTradeOffer(tradeOffer);
+                                        break;
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -444,9 +533,54 @@ public class Player {
                         //Make a tradeOffer
                         Space toGiveSpace = findClosestValueSpace(utility.price, "Utility");
                         if (toGiveSpace != null) {
-                            TradeOffer tradeOffer = new TradeOffer(toGiveSpace, s, this, p);
-                            p.considerIncomingTradeOffer(tradeOffer);
-                            break;
+                            if (toGiveSpace instanceof Property) {
+                                Property toGiveProperty = (Property) toGiveSpace;
+                                if (toGiveProperty.price > utility.price) {
+                                    if (Math.random() < tradingStrategy - 0.05) {
+                                        TradeOffer tradeOffer = new TradeOffer(toGiveSpace, s, this, p);
+                                        p.considerIncomingTradeOffer(tradeOffer);
+                                        break;
+                                    }
+                                } else {
+                                    if (Math.random() < tradingStrategy + 0.05) {
+                                        TradeOffer tradeOffer = new TradeOffer(toGiveSpace, s, this, p);
+                                        p.considerIncomingTradeOffer(tradeOffer);
+                                        break;
+                                    }
+                                }
+                            }
+                            if (toGiveSpace instanceof Railroad) {
+                                Railroad toGiveRailroad = (Railroad) toGiveSpace;
+                                if (toGiveRailroad.price > utility.price) {
+                                    if (Math.random() < tradingStrategy - 0.05) {
+                                        TradeOffer tradeOffer = new TradeOffer(toGiveSpace, s, this, p);
+                                        p.considerIncomingTradeOffer(tradeOffer);
+                                        break;
+                                    }
+                                } else {
+                                    if (Math.random() < tradingStrategy + 0.05) {
+                                        TradeOffer tradeOffer = new TradeOffer(toGiveSpace, s, this, p);
+                                        p.considerIncomingTradeOffer(tradeOffer);
+                                        break;
+                                    }
+                                }
+                            }
+                            if (toGiveSpace instanceof Utility) {
+                                Utility toGiveUtility = (Utility) toGiveSpace;
+                                if (toGiveUtility.price > utility.price) {
+                                    if (Math.random() < tradingStrategy - 0.05) {
+                                        TradeOffer tradeOffer = new TradeOffer(toGiveSpace, s, this, p);
+                                        p.considerIncomingTradeOffer(tradeOffer);
+                                        break;
+                                    }
+                                } else {
+                                    if (Math.random() < tradingStrategy + 0.05) {
+                                        TradeOffer tradeOffer = new TradeOffer(toGiveSpace, s, this, p);
+                                        p.considerIncomingTradeOffer(tradeOffer);
+                                        break;
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -495,8 +629,133 @@ public class Player {
     }
 
     public void considerIncomingTradeOffer(TradeOffer tradeOffer) {
-        if (Math.random() < tradingStrategy) {
-            tradeOffer.trade();
+        Space toGetSpace = tradeOffer.playerProperties1;
+        Space toGiveSpace = tradeOffer.playerProperties2;
+        if (toGetSpace instanceof Property) {
+            Property toGetProperty = (Property) toGetSpace;
+            if (toGiveSpace instanceof Property) {
+                Property toGiveProperty = (Property) toGiveSpace;
+                if (toGiveProperty.price > toGetProperty.price) {
+                    if (Math.random() < tradingStrategy - 0.05) {
+                        tradeOffer.trade();
+                    }
+                } else {
+                    if (Math.random() < tradingStrategy + 0.05) {
+                        tradeOffer.trade();
+                    }
+                }
+
+            }
+            if (toGiveSpace instanceof Railroad) {
+                Railroad toGiveRailroad = (Railroad) toGiveSpace;
+                if (toGiveRailroad.price > toGetProperty.price) {
+                    if (Math.random() < tradingStrategy - 0.05) {
+                        tradeOffer.trade();
+                    }
+                } else {
+                    if (Math.random() < tradingStrategy + 0.05) {
+                        tradeOffer.trade();
+                    }
+                }
+
+            }
+            if (toGiveSpace instanceof Utility) {
+                Utility toGiveUtility = (Utility) toGiveSpace;
+                if (toGiveUtility.price > toGetProperty.price) {
+                    if (Math.random() < tradingStrategy - 0.05) {
+                        tradeOffer.trade();
+                    }
+                } else {
+                    if (Math.random() < tradingStrategy + 0.05) {
+                        tradeOffer.trade();
+                    }
+                }
+
+            }
+        }
+        if (toGetSpace instanceof Railroad) {
+            Railroad toGetRailroad = (Railroad) toGetSpace;
+            if (toGiveSpace instanceof Property) {
+                Property toGiveProperty = (Property) toGiveSpace;
+                if (toGiveProperty.price > toGetRailroad.price) {
+                    if (Math.random() < tradingStrategy - 0.05) {
+                        tradeOffer.trade();
+                    }
+                } else {
+                    if (Math.random() < tradingStrategy + 0.05) {
+                        tradeOffer.trade();
+                    }
+                }
+
+            }
+            if (toGiveSpace instanceof Railroad) {
+                Railroad toGiveRailroad = (Railroad) toGiveSpace;
+                if (toGiveRailroad.price > toGetRailroad.price) {
+                    if (Math.random() < tradingStrategy - 0.05) {
+                        tradeOffer.trade();
+                    }
+                } else {
+                    if (Math.random() < tradingStrategy + 0.05) {
+                        tradeOffer.trade();
+                    }
+                }
+
+            }
+            if (toGiveSpace instanceof Utility) {
+                Utility toGiveUtility = (Utility) toGiveSpace;
+                if (toGiveUtility.price > toGetRailroad.price) {
+                    if (Math.random() < tradingStrategy - 0.05) {
+                        tradeOffer.trade();
+                    }
+                } else {
+                    if (Math.random() < tradingStrategy + 0.05) {
+                        tradeOffer.trade();
+                    }
+                }
+
+            }
+        }
+        if (toGetSpace instanceof Utility) {
+            Utility toGetUtility = (Utility) toGetSpace;
+            if (toGiveSpace instanceof Property) {
+                Property toGiveProperty = (Property) toGiveSpace;
+                if (toGiveProperty.price > toGetUtility.price) {
+                    if (Math.random() < tradingStrategy - 0.05) {
+                        tradeOffer.trade();
+                    }
+                } else {
+                    if (Math.random() < tradingStrategy + 0.05) {
+                        tradeOffer.trade();
+                    }
+                }
+
+            }
+            if (toGiveSpace instanceof Railroad) {
+                Railroad toGiveRailroad = (Railroad) toGiveSpace;
+                if (toGiveRailroad.price > toGetUtility.price) {
+                    if (Math.random() < tradingStrategy - 0.05) {
+                        tradeOffer.trade();
+                    }
+                } else {
+                    if (Math.random() < tradingStrategy + 0.05) {
+                        tradeOffer.trade();
+                    }
+                }
+
+            }
+            if (toGiveSpace instanceof Utility) {
+                Utility toGiveUtility = (Utility) toGiveSpace;
+                if (toGiveUtility.price > toGetUtility.price) {
+                    if (Math.random() < tradingStrategy - 0.05) {
+                        tradeOffer.trade();
+                    }
+                } else {
+                    if (Math.random() < tradingStrategy + 0.05) {
+                        tradeOffer.trade();
+                    }
+                }
+
+            }
         }
     }
 
