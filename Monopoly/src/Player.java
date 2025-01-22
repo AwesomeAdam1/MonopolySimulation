@@ -280,12 +280,12 @@ public class Player {
         //System.out.println(name + "'s balance is now " + money);
     }
     public int bid(int currentBid, Space space) {
-        // auctionStrategy ∈ [0,1) : where every .1 represents max bid will be up to (price * auctionStrategy/0.1)
+        // auctionStrategy ∈ [0,1) : where every 0.25 represents max bid will be up to (price * auctionStrategy/0.25)
         // auctionStrategy = 1 : means always overbid when possible
         if (auctionStrategy < 1) {
             if (space instanceof Property) {
                 Property property = (Property) space;
-                int maxBid = (int) (property.price * auctionStrategy / 0.1);
+                int maxBid = (int) (property.price * auctionStrategy / 0.25);
                 if (currentBid < maxBid) {
                     if (currentBid + biddingIncrement <= money) {
                         //Bid only when have enough money
