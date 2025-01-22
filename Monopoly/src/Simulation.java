@@ -6,7 +6,7 @@ public class Simulation {
     public static PrintWriter filePrint = null;
     public static int game = 0;
     public static int divisionPerAttribute = 5;
-    public static int playerCount = 20; //(int) Math.pow(divisionPerAttribute, 5);
+    public static int playerCount = 50; //(int) Math.pow(divisionPerAttribute, 5);
     public static int[] scores = new int[playerCount];
     public static double[][] lifeExpectancyPerPlayer = new double[playerCount][playerCount];
     public static double [][] winsPerPlayerType = new double[playerCount][playerCount];
@@ -23,11 +23,11 @@ public class Simulation {
     public static int[] totalMoves200 = new int[playerCount];
     public static int[] totalMoves250 = new int[playerCount];
     public static int[] totalMoves250more = new int[playerCount];
-
+    public static int lengthsaaa = 0;
 
     public static void main(String[] args) {
 //        int gamesPerPlayerType = 153;
-        int gamesPerPlayerType = 1128;
+        int gamesPerPlayerType = 1128 * 100;
         double[][] playerWeights = {
                 {0.462, 0.241, 0.586, 0.624, 0.600},
                 {0.895, 0.842, 0.368, 0.947, 0.105},
@@ -244,7 +244,7 @@ public class Simulation {
                 for (int j = i + 1; j < playerWeights.length; j++) {
                     for (int k = j + 1; k < playerWeights.length; k++) {
                         for (int l = k + 1; l < playerWeights.length; l++) {
-                            if (game % 1000 == 0) {
+                            if (game % 5000 == 0) {
                                 System.out.println(game);
                             }
                             game++;
@@ -288,7 +288,6 @@ public class Simulation {
 //        if (filePrint != null) {
 //            filePrint.close();
 //        }
-
         System.out.println(Arrays.toString(scores));
         System.out.println(Arrays.toString(avgNetworth50));
         System.out.println(Arrays.toString(avgNetworth100));
@@ -296,26 +295,27 @@ public class Simulation {
         System.out.println(Arrays.toString(avgNetworth200));
         System.out.println(Arrays.toString(avgNetworth250));
         System.out.println(Arrays.toString(avgNetworth250more));
-        for (int i = 0; i < playerCount; i++) {
-            System.out.println(Arrays.toString(winsPerPlayerType[i]));
-        }
-        for (int i = 0; i < playerCount; i++) {
-            System.out.println(Arrays.toString(lifeExpectancyPerPlayer[i]));
-        }
+//        for (int i = 0; i < playerCount; i++) {
+//            System.out.println(Arrays.toString(winsPerPlayerType[i]));
+//        }
+//        for (int i = 0; i < playerCount; i++) {
+//            System.out.println(Arrays.toString(lifeExpectancyPerPlayer[i]));
+//        }
         for (int i = 0; i < playerCount; i++) {
             for (int j = 0; j < playerCount; j++) {
                 winsPerPlayerType[i][j] /= gamesPerPlayerType;
                 lifeExpectancyPerPlayer[i][j] /= gamesPerPlayerType;
             }
         }
-        System.out.println("Divided by number");
+        System.out.println("Win Percentage");
         for (int i = 0; i < playerCount; i++) {
             System.out.println(Arrays.toString(winsPerPlayerType[i]));
         }
-        System.out.println("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
+        System.out.println("Average Life Expectancy");
         for (int i = 0; i < playerCount; i++) {
             System.out.println(Arrays.toString(lifeExpectancyPerPlayer[i]));
         }
+        System.out.println(lengthsaaa);
 //        for (int i = 0; i < totalGames.length; i++) {
 //            System.out.println(Arrays.toString(totalGames[i]));
 //        }

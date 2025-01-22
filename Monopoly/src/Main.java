@@ -278,6 +278,7 @@ public class Main {
                         = (currentPlayer.getNetWorth() + totalMoves * Simulation.avgNetworth250[playerArrayIndex])/(totalMoves + 1);
                 Simulation.totalMoves250[playerArrayIndex]++;
             } else {
+                //System.out.println("bum");
                 int totalMoves = Simulation.totalMoves250more[playerArrayIndex];
                 Simulation.avgNetworth250more[playerArrayIndex]
                         = (currentPlayer.getNetWorth() + totalMoves * Simulation.avgNetworth250more[playerArrayIndex])/(totalMoves + 1);
@@ -290,7 +291,9 @@ public class Main {
 
         if (players.size() == 1){
             Simulation.scores[Integer.parseInt(players.get(0).name.substring(6))] += 3;
+            Simulation.lengthsaaa += iterations;
         } else {
+
             Collections.sort(players,
                     new Comparator<>() {
                         public int compare(Player a, Player b) {
@@ -309,6 +312,7 @@ public class Main {
                     }
                 }
             }
+            Simulation.lengthsaaa += maxIterations;
         }
 
         //System.out.println("========== GAME END " + iterations + "=========");
@@ -321,7 +325,6 @@ public class Main {
                 //System.out.println(s.toString());
             }
         }
-
 
     }
 
