@@ -28,6 +28,11 @@ public class Simulation {
     public static int totalIntervals = 10;
     public static int[][] totalMoves = new int[playerCount][totalIntervals]; //[player][moves at interval]
     public static int[][] totalNetworth = new int[playerCount][totalIntervals]; //[player][total networth at interval]
+    public static ArrayList<Integer> player1PlacementsBefore = new ArrayList<>();
+    public static ArrayList<Integer> player17PlacementsBefore = new ArrayList<>();
+    public static ArrayList<Integer> player1PlacementsAfter = new ArrayList<>();
+    public static ArrayList<Integer> player17PlacementsAfter = new ArrayList<>();
+
 
     public static void main(String[] args) {
 //        int gamesPerPlayerType = 153;

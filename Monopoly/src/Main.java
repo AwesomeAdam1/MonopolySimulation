@@ -52,6 +52,8 @@ public class Main {
         int maxIterations = 1000;
         int playerIndex = 0;
         int iterations = 1;
+        int player1Placement = -1;
+        int player17Placement = -1;
 
         players = newPlayers;
         for (int i = 0; i < 4; i++) {
@@ -238,6 +240,13 @@ public class Main {
                 //     " from " + currentPlayer.toString());
                 // }
 
+                if (playerArrayIndex == 1) {
+                    player1Placement = 4 - players.size();
+                }
+                if (playerArrayIndex == 17) {
+                    player17Placement = 4 - players.size();
+                }
+
                 players.remove(playerIndex);
                 playerIndex--;
 
@@ -298,14 +307,27 @@ public class Main {
         }
 
         if (players.size() == 1){
-            Simulation.scores[Integer.parseInt(players.get(0).name.substring(6))] += 3;
+            int playerArrayIndex = Integer.parseInt(players.get(0).name.substring(6));
+            Simulation.scores[playerArrayIndex] += 3;
             Simulation.lengthsaaa += iterations;
+            if (playerArrayIndex == 1) {
+                player1Placement = 4 - players.size();
+            }
+            if (playerArrayIndex == 17) {
+                player17Placement = 4 - players.size();
+            }
         } else {
 
             Collections.sort(players, (a, b) -> b.money - a.money);
             for (int i = 0; i < players.size(); i++) {
                 int playerArrayIndex = Integer.parseInt(players.get(i).name.substring(6));
                 Simulation.scores[playerArrayIndex] += 3 - i;
+                if (playerArrayIndex == 1) {
+                    player1Placement = 3 - i;
+                }
+                if (playerArrayIndex == 17) {
+                    player17Placement = 3 - i;
+                }
                 for (int j = i + 1; j < players.size(); j++) {
                    Simulation.winsPerPlayerType[playerArrayIndex][Integer.parseInt(players.get(j).name.substring(6))]++;
                 }
@@ -316,7 +338,29 @@ public class Main {
                 }
             }
             Simulation.lengthsaaa += maxIterations;
+
         }
+
+        boolean hasP1 = false;
+        boolean hasP17 = false;
+        for (int i = 0; i < printTable.length; i++) {
+            if (Integer.parseInt(printTable[i].substring(6)) == 1) {
+                hasP1 = true;
+            }
+            if (Integer.parseInt(printTable[i].substring(6)) == 17) {
+                hasP17 = true;
+            }
+        }
+        if (hasP1 && hasP17) {
+            if (iterations > 50) {
+                Simulation.player1PlacementsAfter.add(player1Placement);
+                Simulation.player17PlacementsAfter.add(player17Placement);
+            } else {
+                Simulation.player1PlacementsBefore.add(player1Placement);
+                Simulation.player17PlacementsBefore.add(player17Placement);
+            }
+        }
+        
 
         //System.out.println("========== GAME END " + iterations + "=========");
         //System.out.println(players.size());
