@@ -52,6 +52,7 @@ public class Main {
         int maxIterations = 1000;
         int playerIndex = 0;
         int iterations = 1;
+
         players = newPlayers;
         for (int i = 0; i < 4; i++) {
             printTable[i] = players.get(i).name;
@@ -252,38 +253,45 @@ public class Main {
 
             int playerArrayIndex = Integer.parseInt(currentPlayer.name.substring(6));
             movesPerPlayer[playerArrayIndex]++;
-            if (movesPerPlayer[playerArrayIndex] <= 50) {
-                int totalMoves = Simulation.totalMoves50[playerArrayIndex];
-                Simulation.avgNetworth50[playerArrayIndex]
-                        = (currentPlayer.getNetWorth() + totalMoves * Simulation.avgNetworth50[playerArrayIndex])/(totalMoves + 1);
-                Simulation.totalMoves50[playerArrayIndex]++;
-            } else if (movesPerPlayer[playerArrayIndex] <= 100) {
-                int totalMoves = Simulation.totalMoves100[playerArrayIndex];
-                Simulation.avgNetworth100[playerArrayIndex]
-                        = (currentPlayer.getNetWorth() + totalMoves * Simulation.avgNetworth100[playerArrayIndex])/(totalMoves + 1);
-                Simulation.totalMoves100[playerArrayIndex]++;
-            } else if (movesPerPlayer[playerArrayIndex] <= 150) {
-                int totalMoves = Simulation.totalMoves150[playerArrayIndex];
-                Simulation.avgNetworth150[playerArrayIndex]
-                        = (currentPlayer.getNetWorth() + totalMoves * Simulation.avgNetworth150[playerArrayIndex])/(totalMoves + 1);
-                Simulation.totalMoves150[playerArrayIndex]++;
-            } else if (movesPerPlayer[playerArrayIndex] <= 200) {
-                int totalMoves = Simulation.totalMoves200[playerArrayIndex];
-                Simulation.avgNetworth200[playerArrayIndex]
-                        = (currentPlayer.getNetWorth() + totalMoves * Simulation.avgNetworth200[playerArrayIndex])/(totalMoves + 1);
-                Simulation.totalMoves200[playerArrayIndex]++;
-            } else if (movesPerPlayer[playerArrayIndex] <= 250) {
-                int totalMoves = Simulation.totalMoves250[playerArrayIndex];
-                Simulation.avgNetworth250[playerArrayIndex]
-                        = (currentPlayer.getNetWorth() + totalMoves * Simulation.avgNetworth250[playerArrayIndex])/(totalMoves + 1);
-                Simulation.totalMoves250[playerArrayIndex]++;
-            } else {
-                //System.out.println("bum");
-                int totalMoves = Simulation.totalMoves250more[playerArrayIndex];
-                Simulation.avgNetworth250more[playerArrayIndex]
-                        = (currentPlayer.getNetWorth() + totalMoves * Simulation.avgNetworth250more[playerArrayIndex])/(totalMoves + 1);
-                Simulation.totalMoves250more[playerArrayIndex]++;
+            for (int i = 1; i <= 15; i++) {
+                if (movesPerPlayer[playerArrayIndex] <= i * Simulation.networthIntervals) {
+                    Simulation.totalNetworth[playerArrayIndex][i] += currentPlayer.getNetWorth();
+                    Simulation.totalGames[playerArrayIndex][i]++;
+                }
             }
+
+            // if (movesPerPlayer[playerArrayIndex] <= 50) {
+            //     int totalMoves = Simulation.totalMoves50[playerArrayIndex];
+            //     Simulation.avgNetworth50[playerArrayIndex]
+            //             = (currentPlayer.getNetWorth() + totalMoves * Simulation.avgNetworth50[playerArrayIndex])/(totalMoves + 1);
+            //     Simulation.totalMoves50[playerArrayIndex]++;
+            // } else if (movesPerPlayer[playerArrayIndex] <= 100) {
+            //     int totalMoves = Simulation.totalMoves100[playerArrayIndex];
+            //     Simulation.avgNetworth100[playerArrayIndex]
+            //             = (currentPlayer.getNetWorth() + totalMoves * Simulation.avgNetworth100[playerArrayIndex])/(totalMoves + 1);
+            //     Simulation.totalMoves100[playerArrayIndex]++;
+            // } else if (movesPerPlayer[playerArrayIndex] <= 150) {
+            //     int totalMoves = Simulation.totalMoves150[playerArrayIndex];
+            //     Simulation.avgNetworth150[playerArrayIndex]
+            //             = (currentPlayer.getNetWorth() + totalMoves * Simulation.avgNetworth150[playerArrayIndex])/(totalMoves + 1);
+            //     Simulation.totalMoves150[playerArrayIndex]++;
+            // } else if (movesPerPlayer[playerArrayIndex] <= 200) {
+            //     int totalMoves = Simulation.totalMoves200[playerArrayIndex];
+            //     Simulation.avgNetworth200[playerArrayIndex]
+            //             = (currentPlayer.getNetWorth() + totalMoves * Simulation.avgNetworth200[playerArrayIndex])/(totalMoves + 1);
+            //     Simulation.totalMoves200[playerArrayIndex]++;
+            // } else if (movesPerPlayer[playerArrayIndex] <= 250) {
+            //     int totalMoves = Simulation.totalMoves250[playerArrayIndex];
+            //     Simulation.avgNetworth250[playerArrayIndex]
+            //             = (currentPlayer.getNetWorth() + totalMoves * Simulation.avgNetworth250[playerArrayIndex])/(totalMoves + 1);
+            //     Simulation.totalMoves250[playerArrayIndex]++;
+            // } else {
+            //     //System.out.println("bum");
+            //     int totalMoves = Simulation.totalMoves250more[playerArrayIndex];
+            //     Simulation.avgNetworth250more[playerArrayIndex]
+            //             = (currentPlayer.getNetWorth() + totalMoves * Simulation.avgNetworth250more[playerArrayIndex])/(totalMoves + 1);
+            //     Simulation.totalMoves250more[playerArrayIndex]++;
+            // }
 
             iterations++;
             playerIndex = (playerIndex + 1) % players.size();
@@ -294,12 +302,7 @@ public class Main {
             Simulation.lengthsaaa += iterations;
         } else {
 
-            Collections.sort(players,
-                    new Comparator<>() {
-                        public int compare(Player a, Player b) {
-                            return b.money - a.money;
-                        }
-                    });
+            Collections.sort(players, (a, b) -> b.money - a.money);
             for (int i = 0; i < players.size(); i++) {
                 int playerArrayIndex = Integer.parseInt(players.get(i).name.substring(6));
                 Simulation.scores[playerArrayIndex] += 3 - i;

@@ -11,19 +11,23 @@ public class Simulation {
     public static double[][] lifeExpectancyPerPlayer = new double[playerCount][playerCount];
     public static double [][] winsPerPlayerType = new double[playerCount][playerCount];
     public static double [][] totalGames = new double[playerCount][playerCount];
-    public static double[] avgNetworth50 = new double[playerCount];
-    public static double[] avgNetworth100 = new double[playerCount];
-    public static double[] avgNetworth150 = new double[playerCount];
-    public static double[] avgNetworth200 = new double[playerCount];
-    public static double[] avgNetworth250 = new double[playerCount];
-    public static double[] avgNetworth250more = new double[playerCount];
-    public static int[] totalMoves50 = new int[playerCount];
-    public static int[] totalMoves100 = new int[playerCount];
-    public static int[] totalMoves150 = new int[playerCount];
-    public static int[] totalMoves200 = new int[playerCount];
-    public static int[] totalMoves250 = new int[playerCount];
-    public static int[] totalMoves250more = new int[playerCount];
+    // public static double[] avgNetworth50 = new double[playerCount];
+    // public static double[] avgNetworth100 = new double[playerCount];
+    // public static double[] avgNetworth150 = new double[playerCount];
+    // public static double[] avgNetworth200 = new double[playerCount];
+    // public static double[] avgNetworth250 = new double[playerCount];
+    // public static double[] avgNetworth250more = new double[playerCount];
+    // public static int[] totalMoves50 = new int[playerCount];
+    // public static int[] totalMoves100 = new int[playerCount];
+    // public static int[] totalMoves150 = new int[playerCount];
+    // public static int[] totalMoves200 = new int[playerCount];
+    // public static int[] totalMoves250 = new int[playerCount];
+    // public static int[] totalMoves250more = new int[playerCount];
     public static int lengthsaaa = 0;
+    public static int networthIntervals = 15;
+    public static int totalIntervals = 10;
+    public static int[][] totalMoves = new int[playerCount][totalIntervals]; //[player][moves at interval]
+    public static int[][] totalNetworth = new int[playerCount][totalIntervals]; //[player][total networth at interval]
 
     public static void main(String[] args) {
 //        int gamesPerPlayerType = 153;
@@ -122,6 +126,7 @@ public class Simulation {
 //        }
 
 //        for (int i = 0; i < playerWeights.length; i++) {
+
 //            System.out.println( Arrays.toString(playerWeights[i]));
 //        }
 //        System.out.println(playerWeights.length);
@@ -288,13 +293,13 @@ public class Simulation {
 //        if (filePrint != null) {
 //            filePrint.close();
 //        }
-        System.out.println(Arrays.toString(scores));
-        System.out.println(Arrays.toString(avgNetworth50));
-        System.out.println(Arrays.toString(avgNetworth100));
-        System.out.println(Arrays.toString(avgNetworth150));
-        System.out.println(Arrays.toString(avgNetworth200));
-        System.out.println(Arrays.toString(avgNetworth250));
-        System.out.println(Arrays.toString(avgNetworth250more));
+        // System.out.println(Arrays.toString(scores));
+        // System.out.println(Arrays.toString(avgNetworth50));
+        // System.out.println(Arrays.toString(avgNetworth100));
+        // System.out.println(Arrays.toString(avgNetworth150));
+        // System.out.println(Arrays.toString(avgNetworth200));
+        // System.out.println(Arrays.toString(avgNetworth250));
+        // System.out.println(Arrays.toString(avgNetworth250more));
 //        for (int i = 0; i < playerCount; i++) {
 //            System.out.println(Arrays.toString(winsPerPlayerType[i]));
 //        }
@@ -305,7 +310,12 @@ public class Simulation {
             for (int j = 0; j < playerCount; j++) {
                 winsPerPlayerType[i][j] /= gamesPerPlayerType;
                 lifeExpectancyPerPlayer[i][j] /= gamesPerPlayerType;
+                totalNetworth[i][j] /= totalMoves[i][j];
             }
+        }
+        System.out.println("Average Networth");
+        for (int i = 0; i < playerCount; i++) {
+            System.out.println(Arrays.toString(totalNetworth[i]));
         }
         System.out.println("Win Percentage");
         for (int i = 0; i < playerCount; i++) {
@@ -315,15 +325,11 @@ public class Simulation {
         for (int i = 0; i < playerCount; i++) {
             System.out.println(Arrays.toString(lifeExpectancyPerPlayer[i]));
         }
-        System.out.println(lengthsaaa);
+//        System.out.println(lengthsaaa);
 //        for (int i = 0; i < totalGames.length; i++) {
 //            System.out.println(Arrays.toString(totalGames[i]));
 //        }
 //        System.out.println(Arrays.toString(totalGames[0]));
 //        System.out.println(totalGames[0].length);
-    }
-
-    public static double clamp(double input) {
-        return Math.max(0, Math.min(1, input));
     }
 }
